@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChangeProfile">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/colorSigup"
+        android:id="@+id/pro_head"
+        >
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chageprofile_back"
+            android:background="@drawable/back_30px"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="4dp"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:id="@+id/re_21"
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:src= "@drawable/circle"
+            android:layout_centerInParent= "true"
+            android:background="@drawable/circleimg"
+            android:id="@+id/img_profile"
+            android:layout_width= "100dp"
+            android:layout_height= "100dp"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_below="@id/re_21"
+        android:id="@+id/re_progress"
+        android:layout_marginBottom="5dp"
+        android:visibility="visible"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:id="@+id/pro_image"
+            android:visibility="visible"
+            android:textColor="@color/white"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/re_progress"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        >
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:shrinkColumns="*"
+            android:stretchColumns="*"
+            >
+            <TableRow>
+                <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Giới tính"
+                        android:id="@+id/txt_0"
+                        android:fontFamily="@font/font1"
+                        />
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/sp_gioitinh"
+                        android:layout_gravity="center"
+                        android:layout_below="@id/txt_0"
+                        />
+                </RelativeLayout>
+                <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ngày sinh"
+                        android:id="@+id/txt_01"
+                        android:fontFamily="@font/font1"
+                        />
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/chprofile_date"
+                        android:fontFamily="@font/font1"
+                        android:gravity="center"
+                        android:layout_below="@id/txt_01"
+                        android:background="@drawable/textprofile"
+                        />
+                </RelativeLayout>
+            </TableRow>
+        </TableLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên đầy đủ"
+            android:fontFamily="@font/font1"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/chprofile_fullname"
+            android:fontFamily="@font/font1"
+            android:gravity="center"
+            android:layout_below="@id/sp_gioitinh"
+            android:textSize="13dp"
+            android:background="@drawable/textprofile"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Địa chỉ"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/font1"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/chprofile_address"
+            android:fontFamily="@font/font1"
+            android:gravity="center"
+            android:layout_below="@id/chprofile_fullname"
+            android:textSize="13dp"
+
+            android:background="@drawable/textprofile"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số điện thoại"
+            android:fontFamily="@font/font1"
+            android:layout_marginTop="10dp"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/chprofile_phone"
+            android:fontFamily="@font/font1"
+            android:gravity="center"
+            android:layout_below="@id/chprofile_address"
+            android:background="@drawable/textprofile"
+            android:textSize="13dp"
+            android:phoneNumber="true"
+            />
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="Cập nhật"
+            android:fontFamily="@font/font1"
+            android:background="@drawable/border"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/btn_update"
+            android:layout_below="@id/chprofile_phone"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/chprofile_black"
+        android:background="@color/black"
+        android:alpha="0.5"
+        android:visibility="gone"
+        />
+</RelativeLayout>

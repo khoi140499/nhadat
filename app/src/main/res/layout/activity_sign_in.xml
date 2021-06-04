@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgrou"
+    tools:context=".SignIn">
+    <RelativeLayout
+        android:id="@+id/re2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/backgrou"
+        android:visibility="visible">
+        <!--        layout chua cac thanh phan-->
+        <RelativeLayout
+            android:paddingTop="60dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtDN"
+                android:text="Đăng Nhập"
+                android:textColor="@color/colorSigup"
+                android:textSize="42dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/font1"
+                />
+            <TextView
+                android:id="@+id/txtInj"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDN"
+                android:text="Chào mừng bạn đã quay lại !"
+                android:textColor="@color/colorSigup"
+                android:textSize="16dp"
+                android:fontFamily="@font/font1"
+                />
+            <ImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/logo"
+                android:layout_alignParentRight="true"
+                />
+
+            <EditText
+                android:id="@+id/txtLogin_Username"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/imgLogo"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/border"
+                android:fontFamily="@font/font1"
+                android:hint="Tên đăng nhập"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:textColor="@color/colorSigup"
+                android:textColorHint="@color/colorSigup"
+                android:textSize="15dp"/>
+            <EditText
+                android:id="@+id/txtLogin_Password"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/txtLogin_Username"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/border"
+                android:fontFamily="@font/font1"
+                android:hint="Mật khẩu"
+                android:inputType="textPassword"
+                android:paddingLeft="10dp"
+                android:password="true"
+                android:textColor="@color/colorSigup"
+                android:textColorHint="@color/colorSigup"
+                android:textSize="15dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:layout_below="@id/txtLogin_Password"
+                android:textColor="@color/colorSigup"
+                android:fontFamily="@font/font1"
+                android:id="@+id/forgotpass"
+                android:text="Lấy lại mật khẩu"
+                android:drawableLeft="@drawable/checkmark_20px"
+                />
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="220dp"
+                android:layout_height="50dp"
+                android:layout_below="@id/forgotpass"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/font1"
+                android:background="@drawable/borderbutton"
+                android:text="Đăng Nhập"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                />
+            <!--            layout chua image button-->
+            <RelativeLayout
+                android:layout_marginTop="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/re4"
+                android:layout_below="@id/btnLogin"
+                android:layout_centerHorizontal="true"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txt1"
+                    android:text="Bạn chưa có tài khoản ?"
+                    android:textSize="17dp"
+                    android:textColor="@color/colorSigup"
+                    android:fontFamily="@font/font1"
+                    ></TextView>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnSigUp"
+                    android:layout_toRightOf="@id/txt1"
+                    android:background="@android:color/transparent"
+                    android:text="Đăng Kí"
+                    android:textColor="#4A59F7"
+                    android:fontFamily="@font/font1"
+                    android:layout_marginTop="-8.5dp"
+                    android:textStyle="bold"
+                    />
+            </RelativeLayout>
+            <!--            -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@color/black"
+            android:alpha="0.5"
+            android:id="@+id/rebackground"
+            ></RelativeLayout>
+        <!--        fogot password-->
+        <RelativeLayout
+            android:layout_width="400dp"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/backgroundresetpass"
+            android:id="@+id/reFogotPass"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="20dp"
+            android:visibility="gone"
+            >
+            <EditText
+                android:layout_marginTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:textSize="13dp"
+                android:background="@drawable/backgroundfogot"
+                android:hint="Nhập email để lấy lại mật khẩu"
+                android:gravity="center"
+                android:inputType="text"
+                android:id="@+id/txtFotgotPassword"
+                android:fontFamily="@font/font1"
+                />
+            <Button
+                android:id="@+id/btnGui"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/txtFotgotPassword"
+                android:text="Gửi"
+                android:textColor="@color/white"
+                android:fontFamily="@font/font1"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/re_black"
+            android:background="@color/black"
+            android:alpha="0.5"
+            android:visibility="gone"
+            ></RelativeLayout>
+        <!--        ====================-->
+        <RelativeLayout
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:id="@+id/reLoad"
+            android:visibility="gone"
+            android:background="@color/white"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            >
+            <ProgressBar
+                android:layout_centerVertical="true"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/pro_load"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:indeterminateTint="#F9AB00"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đang tải..."
+                android:textSize="20dp"
+                android:fontFamily="@font/font1"
+                android:textStyle="bold"
+                android:layout_toRightOf="@id/pro_load"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                />
+        </RelativeLayout>
+        <!--        &#45;&#45;&#45;&#45;&#45;&#45;-->
+    </RelativeLayout>
+</RelativeLayout>

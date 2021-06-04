@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/btntindangupdate"
+        android:title="Chỉnh sửa"
+        />
+    <item android:id="@+id/btnupdatean"
+        android:title="Ẩn tin"
+        />
+    <item android:id="@+id/btntindangxoa"
+        android:title="Xóa"/>
+</menu>
