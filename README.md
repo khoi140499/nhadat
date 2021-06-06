@@ -2,7 +2,7 @@
 
 1
 
-**GIỚI THIỆU VỀ BACK4APP**
+<center> <h1>GIỚI THIỆU VỀ BACK4APP</h1> </center>
 
 **1.1. Giới thiệu**
 
