@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,16 +29,18 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Profile extends AppCompatActivity implements View.OnClickListener {
-    private ImageButton back;
-    private Button btnUpdate, btnLogOut, btnSignIn, btnSignUp;
+    private Button back, btnDanhGia;
+    private Button btnUpdate, btnLogOut, btnSignIn, btnSignUp, btnFollow, btnFollowing;
     private String loin;
-    private TextView fullname, email, phone, address, date;
+    private TextView fullname, email, phone, address, date, follow, following;
     private RelativeLayout re_1, re_2;
     private SQLiteDatabase db;
     private String category="";
     private CircleImageView img;
     private RecyclerView re;
     private ListAdapter adapter;
+    private ImageView imageView;
+    private RatingBar rd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +66,16 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 address.setText(ParseUser.getCurrentUser().getString("address"));
                 Picasso.get().load(Uri.parse(ParseUser.getCurrentUser().
                                     getString("imgurl"))).into(img);
+                Picasso.get().load(Uri.parse(ParseUser.getCurrentUser().
+                        getString("imgurl"))).into(imageView);
+
+                ParseQuery<ParseObject> query1=ParseQuery.getQuery("rating");
+                query1.whereEqualTo("namepost", ParseUser.getCurrentUser().getUsername());
+                query1.findInBackground(((objects, e) -> {
+                    if(e==null){
+                        calculatorRate(objects,rd);
+                    }
+                }));
             }
             catch (NullPointerException e){
                 System.out.println(e.getMessage());
@@ -69,7 +83,18 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    private void calculatorRate(List<ParseObject> list,RatingBar rd){
+        float diem=0;
+        for(ParseObject as:list){
+            diem+=as.getDouble("rate");
+        }
+        rd.setRating(diem/list.size());
+    }
+
     private void setID(){
+        rd=findViewById(R.id.profile_rate);
+        btnDanhGia=findViewById(R.id.profile_danhgia);
+        imageView=findViewById(R.id.imagebackground);
         back=findViewById(R.id.profile_back);
         fullname=findViewById(R.id.profile_fullname);
         email=findViewById(R.id.profile_email);
@@ -84,7 +109,10 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         img=findViewById(R.id.image_profilee);
         re_2=findViewById(R.id.re_buttonsign);
         re=findViewById(R.id.recycle_tinluu);
-
+        follow=findViewById(R.id.profile_follow);
+        following=findViewById(R.id.profile_following);
+        btnFollow=findViewById(R.id.profile_btnfollow);
+        btnFollowing=findViewById(R.id.profile_btnfollowing);
     }
 
     private void setListener(){
@@ -93,11 +121,13 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         btnUpdate.setOnClickListener(this);
         btnSignIn.setOnClickListener(this);
         btnSignUp.setOnClickListener(this);
+        btnDanhGia.setOnClickListener(this);
+        btnFollow.setOnClickListener(this);
+        btnFollowing.setOnClickListener(this);
     }
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 
     private void setViewData(){
@@ -115,6 +145,22 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                             }
                         }));
                     }
+                }
+            }));
+
+            ParseQuery<ParseObject> query2=ParseQuery.getQuery("follow");
+            query2.whereEqualTo("user_id", ParseUser.getCurrentUser().getUsername());
+            query2.findInBackground(((objects, e) -> {
+                if(e==null){
+                    following.setText(objects.size()+"");
+                }
+            }));
+
+            ParseQuery<ParseObject> query3=ParseQuery.getQuery("follow");
+            query3.whereEqualTo("user_following", ParseUser.getCurrentUser().getUsername());
+            query3.findInBackground(((objects, e) -> {
+                if(e==null){
+                    follow.setText(objects.size()+"");
                 }
             }));
         }
@@ -147,6 +193,12 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 startActivity(a);
                 break;
             }
+            case R.id.profile_danhgia:{
+                Intent a=new Intent(this, Rating.class);
+                a.putExtra("name", ParseUser.getCurrentUser().getUsername());
+                startActivity(a);
+                break;
+            }
             case R.id.chage_profile1:{
                 Intent a=new Intent(this, ChangeProfile.class);
                 startActivity(a);
@@ -164,6 +216,14 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 startActivity(a);
                 break;
             }
+            case R.id.profile_btnfollow:{
+
+                break;
+            }
+            case R.id.profile_btnfollowing:{
+
+                break;
+            }
             case R.id.logout:{
                 ParseUser.logOutInBackground(e -> {
                     if(e==null){
@@ -177,6 +237,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                         phone.setText("");
                         address.setText("");
                         img.setImageResource(R.drawable.circle);
+                        imageView.setImageResource(R.drawable.backgrou);
                     } });
                 break;
             }

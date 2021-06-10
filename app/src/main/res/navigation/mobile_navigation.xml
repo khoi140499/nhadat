@@ -5,18 +5,26 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home"
     >
-
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.nhadat_app.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
     <fragment
+        android:id="@+id/navigation_message"
+        android:name="com.example.nhadat_app.ui.message.Message"
+        android:label="@string/mess"
+        tools:layout="@layout/fragment_message" />
+    <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.nhadat_app.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
-
+    <fragment
+        android:id="@+id/navigation_notif"
+        android:name="com.example.nhadat_app.ui.noti.Notifi"
+        android:label="@string/noti"
+        tools:layout="@layout/fragment_notifi" />
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.nhadat_app.ui.notifications.NotificationsFragment"

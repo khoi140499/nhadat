@@ -33,10 +33,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Rating extends AppCompatActivity implements View.OnClickListener {
     private CircleImageView img;
-    private TextView txtFullName, txtDG;
-    private EditText txtCmt;
-    private RatingBar rd;
-    private Button btn;
+    private TextView txtFullName, txtDG, txtCount;
+    private Button btn1;
     private RecyclerView re;
     private ListRatingAdapter adpater;
     @Override
@@ -52,10 +50,9 @@ public class Rating extends AppCompatActivity implements View.OnClickListener {
 
     private void setID(){
         img=findViewById(R.id.rate_img);
+        txtCount=findViewById(R.id.txt_count);
         txtFullName=findViewById(R.id.rate_fullname);
-        txtCmt=findViewById(R.id.rating_cmt);
-        rd=findViewById(R.id.rating_1);
-        btn=findViewById(R.id.rating_btn);
+        btn1=findViewById(R.id.rating_btn2);
         txtDG=findViewById(R.id.dgia);
         re=findViewById(R.id.recycle_rating);
     }
@@ -81,6 +78,14 @@ public class Rating extends AppCompatActivity implements View.OnClickListener {
                 setDataRecycleView(objects);
             }
         }));
+
+        ParseQuery<ParseObject> query2=ParseQuery.getQuery("rating");
+        query2.whereEqualTo("namepost", name);
+        query2.findInBackground(((objects, e) -> {
+            if(e==null){
+                calculatorRate(objects,txtCount);
+            }
+        }));
     }
 
     private void setDataRecycleView(List<ParseObject> list){
@@ -101,55 +106,30 @@ public class Rating extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if(v.getId()==R.id.rating_btn){
+        if(v.getId()==R.id.rating_btn2){
+            Intent as=getIntent();
+            String name=as.getStringExtra("name");
             if(ParseUser.getCurrentUser()==null){
-                Toast.makeText(this,"Đăng nhập để thực hiện đánh giá", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Bạn chưa đăng nhập", Toast.LENGTH_LONG).show();
+            }
+            else if(ParseUser.getCurrentUser().getUsername().equalsIgnoreCase(name)==true){
+                Toast.makeText(this, "Bạn chưa đăng nhập", Toast.LENGTH_LONG).show();
             }
             else{
-                Intent a=getIntent();
-                String name=a.getStringExtra("name");
-                ParseObject object=new ParseObject("rating");
-                object.put("namedg", ParseUser.getCurrentUser().getUsername());
-                object.put("namepost", name);
-                object.put("rate", rd.getRating());
-                object.put("cmt", txtCmt.getText().toString());
-                String[] arr=(Calendar.getInstance().getTime()+"").split(" ");
-                object.put("timeUp", arr[2]+" "+arr[1]+" "+arr[5]+" at "+arr[3]+" UTC");
-                object.saveInBackground(e -> {
-                    if(e==null){
-                        Toast.makeText(this, "Đánh giá thành công", Toast.LENGTH_LONG).show();
-                    }
-                });
-                ParseQuery<ParseUser> query=ParseUser.getQuery();
-                query.whereEqualTo("username", name);
-                query.findInBackground(((objects, e) -> {
-                    if(e==null){
-                        for(ParseUser as:objects){
-                            putNotification(name, "Bạn vừa nhận được đánh từ "+
-                                    as.getString("fullname")+": "+txtCmt.getText().toString());
-                        }
-                    }
-                }));
-
+                Intent a=new Intent(this, WritingComment.class);
+                a.putExtra("name", name);
+                startActivity(a);
             }
         }
     }
 
-    //put notification
-    private void putNotification(String name, String ds){
-        JSONObject data = new JSONObject();
-
-        try {
-            data.put("alert", ds);
-            data.put("title", "Nhà đất");
-        } catch (JSONException e) {
-            throw new IllegalArgumentException("unexpected parsing error", e);
+    private void calculatorRate(List<ParseObject> list,TextView rd){
+        float diem=0;
+        for(ParseObject as:list){
+            diem+=as.getDouble("rate");
         }
-
-        ParsePush push = new ParsePush();
-        push.setChannel(name);
-        push.setData(data);
-        push.sendInBackground();
+        System.out.println("diem "+diem/list.size());
+        rd.setText(diem/list.size()+"");
     }
 
     private void getBack4App(){
@@ -161,6 +141,6 @@ public class Rating extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void setListener(){
-        btn.setOnClickListener(this);
+        btn1.setOnClickListener(this);
     }
 }

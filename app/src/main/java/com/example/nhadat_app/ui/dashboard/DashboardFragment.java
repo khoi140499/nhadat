@@ -154,6 +154,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         binding = null;
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){

@@ -113,11 +113,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listA> {
             }
             else if(kq/60>23){
                 {
-                    if(kq/(60*24) > 0 && kq/(60*24) <=30){
+                    if(kq/(60*24) > 0 && kq/(60*24) <=7){
                         holder.thoigian.setText((long)kq/(60*24)+" ngày trước");
                     }
                     else{
-                        holder.thoigian.setText((long)kq/(60*24*30)+" tháng trước");
+                        if(kq/(60*24*7)>0 && kq/(60*24*7)<=4){
+                            holder.thoigian.setText((long)kq/(60*24*7)+" tuần trước");
+                        }
+                        else{
+                            holder.thoigian.setText((long)kq/(60*24*30)+" tháng trước");
+                        }
                     }
                 }
             }

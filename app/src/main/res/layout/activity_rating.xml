@@ -10,103 +10,85 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
-        <LinearLayout
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:orientation="horizontal"
-            android:background="@drawable/textprofile"
-            android:paddingLeft="15dp"
+            android:layout_height="170dp"
+            android:stretchColumns="*"
+            android:background="@color/colorSigup"
+            android:gravity="center_vertical"
             >
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:id="@+id/rate_img"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/circleimg"
-                />
-            <LinearLayout
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:orientation="vertical"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:gravity="center_vertical"
+                android:layout_height="170dp"
                 >
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:fontFamily="@font/font1"
-                    android:textStyle="bold"
-                    android:textSize="16dp"
-                    android:textColor="@color/black"
-                    android:id="@+id/rate_fullname"
-                    />
-            </LinearLayout>
-        </LinearLayout>
+                <LinearLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    >
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:id="@+id/rate_img"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/circleimg"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:fontFamily="@font/font1"
+                        android:textStyle="bold"
+                        android:layout_marginTop="8dp"
+                        android:textSize="16dp"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/white"
+                        android:id="@+id/rate_fullname"
+                        />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:textStyle="bold"
+                        android:textSize="45dp"
+                        android:gravity="center_horizontal|bottom"
+                        android:textColor="@color/white"
+                        android:id="@+id/txt_count"
+                        />
+
+                    <RatingBar
+                        style="@android:style/Widget.DeviceDefault.Light.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:id="@+id/tt_rating"
+                        android:theme="@style/RatingBar"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:numStars="5" />
+
+                </LinearLayout>
+            </TableRow>
+        </TableLayout>
         <LinearLayout
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="40dp"
             android:orientation="vertical"
-            android:background="@drawable/textprofile"
-            android:paddingLeft="15dp"
             >
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_width="90dp"
-                    android:layout_height="30dp"
-                    android:text="Đánh giá: "
-                    android:drawableLeft="@drawable/star_15px"
-                    android:fontFamily="@font/font1"
-                    android:textSize="12dp"
-                    android:gravity="center_vertical|center"
-                    />
-                <RatingBar
-                    style="@android:style/Widget.DeviceDefault.Light.RatingBar.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/rating_1"
-                    android:isIndicator="false"
-                    android:layout_marginTop="8dp"
-                    android:numStars="5"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_width="90dp"
-                    android:layout_height="30dp"
-                    android:text="Bình luận: "
-                    android:drawableLeft="@drawable/quote_15px"
-                    android:fontFamily="@font/font1"
-                    android:textSize="12dp"
-                    android:gravity="center_vertical|center"
-                    />
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:isIndicator="true"
-                    android:id="@+id/rating_cmt"
-                    android:textSize="8dp"
-                    android:fontFamily="@font/font1"
-                    android:layout_gravity="center_vertical"
-                />
-            </LinearLayout>
             <Button
-                android:layout_width="90dp"
-                android:layout_height="35dp"
-                android:id="@+id/rating_btn"
-                android:text="Đánh giá"
-                android:textSize="11dp"
-                android:background="@null"
-                android:textColor="@color/teal_700"
-                />
+                android:id="@+id/rating_btn2"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/buttonrate"
+                android:text="Viết đánh giá"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:textColor="@color/colorSigup"
+                android:textSize="12dp" />
         </LinearLayout>
         <TextView
             android:layout_width="match_parent"
@@ -116,6 +98,7 @@
             android:textColor="@color/black"
             android:id="@+id/dgia"
             android:paddingLeft="15dp"
+            android:layout_marginTop="7dp"
             android:gravity="center_vertical"
             />
         <androidx.recyclerview.widget.RecyclerView

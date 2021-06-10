@@ -13,4 +13,6 @@
     <string name="home">Trang chủ</string>
     <string name="post">Đăng tin</string>
     <string name="manager">Quản lý tin đăng</string>
+    <string name="noti">Thông báo</string>
+    <string name="mess">Tin nhắn</string>
 </resources>

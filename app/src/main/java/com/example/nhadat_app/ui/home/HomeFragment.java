@@ -1,5 +1,6 @@
 package com.example.nhadat_app.ui.home;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private RecyclerView re;
     private ListAdapter adapter;
     private SliderView sliderView;
+    private ProgressDialog progressDialog;
     private Button btn1, btn2, btn3;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         btn1=root.findViewById(R.id.home_muaban);
         btn2=root.findViewById(R.id.home_chothue);
         btn3=root.findViewById(R.id.home_duan);
+        progressDialog=new ProgressDialog(getActivity());
         ArrayList<ImageSlide> sliderDataArrayList = new ArrayList<>();
         sliderDataArrayList.add(new ImageSlide(R.drawable.ban1));
         sliderDataArrayList.add(new ImageSlide(R.drawable.ban2));
@@ -67,12 +70,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void getData(){
+        progressDialog.show();
         ParseQuery<ParseObject> query=ParseQuery.getQuery("postin");
         query.setLimit(2000);
         query.whereEqualTo("tinhtrang","duyệt");
         query.orderByDescending("luotxem");
         query.findInBackground(((objects, e) -> {
             if(e==null){
+                progressDialog.dismiss();
                 setAdapter(objects);
             }
         }));

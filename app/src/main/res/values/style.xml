@@ -4,4 +4,11 @@
         <item name="android:textSize">13dp</item>
         <item name="android:fontFamily">@font/font1</item>
     </style>
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/app2</item>
+    </style>
+    <style name="ImageZoom" parent="Theme.AppCompat.Light.DialogWhenLarge">
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>

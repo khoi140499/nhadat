@@ -7,9 +7,18 @@
         android:title="@string/home" />
 
     <item
+        android:id="@+id/navigation_message"
+        android:icon="@drawable/ic_baseline_chat_bubble_24"
+        android:title="@string/mess" />
+    <item
         android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/inscription_24px"
+        android:icon="@drawable/ic_baseline_add_box_24"
         android:title="@string/post" />
+
+    <item
+        android:id="@+id/navigation_notif"
+        android:icon="@drawable/ic_baseline_notifications_24"
+        android:title="@string/noti" />
 
     <item
         android:id="@+id/navigation_notifications"

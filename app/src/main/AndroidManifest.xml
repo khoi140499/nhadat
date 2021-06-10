@@ -12,16 +12,26 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-
     <application
         android:name=".checknetwork.NetworkApp"
         android:allowBackup="true"
-        android:icon="@mipmap/logomoi"
+        android:icon="@mipmap/logoimg"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/logomoi"
+        android:roundIcon="@mipmap/logoimg"
         android:supportsRtl="true"
         android:theme="@style/Theme.NhaDat_App">
-        <activity android:name=".Rating"></activity>
+        <activity android:name=".ImageZoom" android:theme="@style/ImageZoom"
+            android:label=""/>
+        <activity android:name=".Chat" />
+        <activity
+            android:name=".Follow"
+            android:label="Theo dõi"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".WritingComment"
+            android:label="Đánh giá"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity android:name=".Rating" />
         <activity android:name=".ViewProfile" />
         <activity android:name=".Admin" />
         <activity android:name=".ItemDanhMuc" />
@@ -73,28 +83,26 @@
             android:value="@string/back4app_app_id" />
         <meta-data
             android:name="com.parse.CLIENT_KEY"
-            android:value="@string/back4app_client_key" />
-
-
-<!--        ////-->
-        <meta-data android:name="com.parse.push.gcm_sender_id"
+            android:value="@string/back4app_client_key" /> <!-- //// -->
+        <meta-data
+            android:name="com.parse.push.gcm_sender_id"
             android:value="id:267196795826" />
 
-        <service
-            android:name="com.parse.fcm.ParseFirebaseMessagingService">
+        <service android:name="com.parse.fcm.ParseFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <receiver android:name="com.parse.ParsePushBroadcastReceiver" android:exported="false">
+        <receiver
+            android:name="com.parse.ParsePushBroadcastReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.OPEN" />
                 <action android:name="com.parse.push.intent.DELETE" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

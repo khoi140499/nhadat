@@ -2,14 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="horizontal"
-    android:paddingLeft="10dp"
+    android:paddingLeft="15dp"
     android:paddingRight="5dp"
     android:background="@drawable/textprofile"
     android:layout_height="100dp">
     <ImageView
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:id="@+id/card_img"
+        android:scaleType="fitXY"
         android:layout_gravity="center_vertical"
         />
     <LinearLayout

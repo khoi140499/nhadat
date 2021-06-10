@@ -1,15 +1,18 @@
 package com.example.nhadat_app;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -41,6 +44,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SearchView sv;
     private LinearLayout ln;
     private RecyclerView re;
+    private ProgressDialog progressDialog;
     private ListAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         re=findViewById(R.id.recycle_search);
         sv.setClickable(false);
         reSearch=findViewById(R.id.bar_nav);
+        progressDialog=new ProgressDialog(this);
 
         String s=db.getTK();
         if(s.equalsIgnoreCase("null")==true){
@@ -118,18 +125,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .server(getString(R.string.back4app_server_url))
                 .build());
 
-//        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-//        installation.put("GCMSenderId", "267196795826");
-//        installation.saveInBackground((e -> {
-//            if(e!=null){
-//                Toast.makeText(this, "loi "+e.getMessage(),Toast.LENGTH_LONG).show();
-//            }
-//        }));
-
         if(ParseUser.getCurrentUser()!=null){
             final ArrayList<String> channels = new ArrayList<>();
             channels.add(ParseUser.getCurrentUser().getUsername());
             channels.add(ParseUser.getCurrentUser().getUsername()+"tindang");
+            channels.add(ParseUser.getCurrentUser().getUsername()+"follow");
             ParseInstallation installation = ParseInstallation.getCurrentInstallation();
             installation.put("GCMSenderId", "267196795826");
             installation.put("channels", channels);

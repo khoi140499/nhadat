@@ -10,63 +10,189 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:orientation="horizontal"
-            android:background="@drawable/textprofile"
-            android:paddingLeft="15dp"
+            android:layout_height="350dp"
+            android:gravity="bottom"
+            android:orientation="vertical"
             >
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:id="@+id/viewprofile_img"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/circleimg"
-                />
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:orientation="vertical"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="10dp"
+                android:layout_height="match_parent"
+                android:background="@color/black"
+                android:alpha="0.5"
                 >
-                <TextView
+                <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:text="Profile Name"
-                    android:fontFamily="@font/font1"
-                    android:textStyle="bold"
-                    android:textSize="16dp"
-                    android:textColor="@color/black"
-                    android:id="@+id/viewprofile_fullname"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/backgrou"
+                    android:id="@+id/viewprofile_imgbackground"
+                    android:scaleType="centerCrop"
                     />
-
-                <LinearLayout
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:paddingBottom="35dp"
+                >
+                <RelativeLayout
+                    android:id="@+id/re_pro"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:orientation="horizontal"
+                    android:layout_height="210dp"
+                    android:layout_below="@id/re_left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@color/colorapp">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_alignParentBottom="true"
+                        >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/font1"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:textSize="26dp"
+                            android:gravity="center_horizontal"
+                            android:id="@+id/viewprofile_fullname"
+                            />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_below="@id/viewprofile_fullname"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal"
+                            android:id="@+id/ln3"
+                            >
+                            <RatingBar
+                                style="@android:style/Widget.DeviceDefault.Light.RatingBar.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:isIndicator="true"
+                                android:id="@+id/viewprofile_rating"
+                                android:theme="@style/RatingBar"
+                                android:layout_marginTop="5dp"
+                                android:numStars="5" />
+                            <Button
+                                android:layout_width="60dp"
+                                android:layout_height="28dp"
+                                android:text="Đánh giá"
+                                android:textSize="8dp"
+                                android:background="@null"
+                                android:id="@+id/viewprofile_danhgia"
+                                android:textColor="@color/app3"
+                                />
+                        </LinearLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:orientation="horizontal"
+                            android:id="@+id/lnflo"
+                            android:layout_below="@id/ln3"
+                            >
+                            <TableLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:stretchColumns="*"
+                                >
+                                <TableRow
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    >
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="40dp"
+                                        android:orientation="horizontal"
+                                        android:gravity="right|center_vertical"
+                                        >
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="30dp"
+                                            android:text="0"
+                                            android:id="@+id/txt_follow"
+                                            android:textColor="@color/white"
+                                            android:gravity="center_vertical"
+                                            />
+                                        <Button
+                                            android:layout_width="90dp"
+                                            android:layout_height="30dp"
+                                            android:id="@+id/btn_follow"
+                                            android:text="Người theo dõi"
+                                            android:fontFamily="@font/font1"
+                                            android:textSize="8dp"
+                                            android:textColor="@color/white"
+                                            android:gravity="center"
+                                            android:background="@null"
+                                            />
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="40dp"
+                                        android:orientation="horizontal"
+                                        android:gravity="center_vertical"
+                                        >
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="30dp"
+                                            android:text="0"
+                                            android:id="@+id/txt_follwing"
+                                            android:textColor="@color/white"
+                                            android:gravity="center_vertical"
+                                            />
+                                        <Button
+                                            android:layout_width="90dp"
+                                            android:layout_height="30dp"
+                                            android:id="@+id/btn_following"
+                                            android:text="Đang theo dõi"
+                                            android:fontFamily="@font/font1"
+                                            android:textSize="8dp"
+                                            android:textColor="@color/white"
+                                            android:gravity="center"
+                                            android:background="@null"
+                                            />
+                                    </LinearLayout>
+                                </TableRow>
+                            </TableLayout>
+                        </RelativeLayout>
+                        <Button
+                            android:layout_width="110dp"
+                            android:layout_height="27dp"
+                            android:id="@+id/viewprofile_follow"
+                            android:layout_below="@id/lnflo"
+                            android:text="Theo dõi"
+                            android:paddingLeft="7dp"
+                            android:textSize="9dp"
+                            android:textColor="@color/white"
+                            android:drawablePadding="-15dp"
+                            android:background="@drawable/followbutton"
+                            android:layout_centerHorizontal="true"
+                            android:drawableLeft="@drawable/ic_baseline_add_24"
+                            android:layout_marginTop="5dp"
+                            />
+                    </RelativeLayout>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:background="@drawable/circleimg"
+                    android:id="@+id/re_left"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="-60dp"
+                    android:gravity="center"
                     >
-                    <RatingBar
-                        style="@android:style/Widget.DeviceDefault.Light.RatingBar.Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:isIndicator="true"
-                        android:id="@+id/viewprofile_rating"
-                        android:layout_marginTop="5dp"
-                        android:numStars="5" />
-                    <Button
-                        android:layout_width="60dp"
-                        android:layout_height="28dp"
-                        android:text="Đánh giá"
-                        android:textSize="8dp"
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="122dp"
+                        android:layout_height="122dp"
+                        android:id="@+id/viewprofile_img"
                         android:background="@null"
-                        android:id="@+id/viewprofile_danhgia"
-                        android:textColor="@color/teal_700"
                         />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="110dp"
