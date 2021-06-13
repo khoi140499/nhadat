@@ -47,7 +47,6 @@ public class ViewProfile extends AppCompatActivity implements View.OnClickListen
         setListener();
         setViewData();
     }
-
     private void setID(){
         txtFollow=findViewById(R.id.txt_follow);
         txtFollowing=findViewById(R.id.txt_follwing);
@@ -114,21 +113,22 @@ public class ViewProfile extends AppCompatActivity implements View.OnClickListen
                 txtFollow.setText(objects.size()+"");
             }
         }));
-
-        ParseQuery<ParseObject> query4=ParseQuery.getQuery("follow");
-        query4.whereEqualTo("user_id", ParseUser.getCurrentUser().getUsername());
-        query4.findInBackground(((objects, e) -> {
-            if(e==null){
-                for(ParseObject as:objects){
-                    if(as.getString("user_following").equalsIgnoreCase(name)==true){
-                        btnFL.setText("Huỷ theo dõi");
+        if(ParseUser.getCurrentUser()!=null){
+            ParseQuery<ParseObject> query4=ParseQuery.getQuery("follow");
+            query4.whereEqualTo("user_id", ParseUser.getCurrentUser().getUsername());
+            query4.findInBackground(((objects, e) -> {
+                if(e==null){
+                    for(ParseObject as:objects){
+                        if(as.getString("user_following").equalsIgnoreCase(name)==true){
+                            btnFL.setText("Huỷ theo dõi");
+                        }
                     }
                 }
-            }
-            else {
-                btnFL.setText("Theo dõi");
-            }
-        }));
+                else {
+                    btnFL.setText("Theo dõi");
+                }
+            }));
+        }
     }
 
 

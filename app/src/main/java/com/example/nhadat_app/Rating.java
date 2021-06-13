@@ -128,7 +128,9 @@ public class Rating extends AppCompatActivity implements View.OnClickListener {
         for(ParseObject as:list){
             diem+=as.getDouble("rate");
         }
-        System.out.println("diem "+diem/list.size());
+        if(list.size()==0){
+            rd.setText("0");
+        }
         rd.setText(diem/list.size()+"");
     }
 

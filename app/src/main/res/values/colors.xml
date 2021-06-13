@@ -17,4 +17,6 @@
     <color name="app2">#C78904</color>
     <color name="app1">#F2F2F2</color>
     <color name="app3">#F9AB00</color>
+    <color name="mess">#0084FF</color>
+    <color name="send">#B5B5B5</color>
 </resources>

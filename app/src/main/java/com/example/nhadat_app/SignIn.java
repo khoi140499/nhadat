@@ -37,7 +37,6 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-
         getIDView();
         getBack4App();
         setListener();
@@ -114,6 +113,11 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
                 else if(b.getStringExtra("activity").equalsIgnoreCase("manager")==true){
                     Intent a=new Intent(SignIn.this, SignUp.class);
                     a.putExtra("activity", "manager");
+                    startActivity(a);
+                }
+                else if(b.getStringExtra("activity").equalsIgnoreCase("message")==true){
+                    Intent a=new Intent(SignIn.this, SignUp.class);
+                    a.putExtra("activity", "message");
                     startActivity(a);
                 }
                 break;
@@ -298,6 +302,12 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
                             else if(s.equalsIgnoreCase("manager")==true){
                                 Intent a=new Intent(SignIn.this, MainActivity.class);
                                 a.putExtra("type","mnager");
+                                a.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(a);
+                            }
+                            else if(s.equalsIgnoreCase("message")==true){
+                                Intent a=new Intent(SignIn.this, MainActivity.class);
+                                a.putExtra("type","message");
                                 a.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(a);
                             }

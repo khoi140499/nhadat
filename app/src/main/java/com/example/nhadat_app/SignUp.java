@@ -173,6 +173,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                                     showMessage("Tài khoản đã được tạo thành công!",
                                             "Vui lòng xác nhận email trước khi thực hiện đăng nhập",ss, false);
                                 }
+                                if(ss.equalsIgnoreCase("message")==true){
+                                    showMessage("Tài khoản đã được tạo thành công!",
+                                            "Vui lòng xác nhận email trước khi thực hiện đăng nhập",ss, false);
+                                }
                                 else{
                                     showMessage1("Tài khoản đã được tạo thành công!",
                                             "Vui lòng xác nhận email trước khi thực hiện đăng nhập", false);;
@@ -244,6 +248,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         AlertDialog ok = builder.create();
         ok.show();
     }
+
 
     //date piker dialog
 

@@ -239,6 +239,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 navGraph.setStartDestination(R.id.navigation_notifications);
                 navController.setGraph(navGraph);
             }
+            else if(a.getStringExtra("type").equalsIgnoreCase("message")==true){
+                re2.setVisibility(View.VISIBLE);
+                re1.setVisibility(View.GONE);
+                NavGraph navGraph=navController.getGraph();
+                navGraph.setStartDestination(R.id.navigation_message);
+                navController.setGraph(navGraph);
+            }
         }catch (NullPointerException e){
 
         }

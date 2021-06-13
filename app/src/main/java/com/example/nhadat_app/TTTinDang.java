@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nhadat_app.ImageSlider.ImageAdapter;
 import com.example.nhadat_app.ImageSlider.ImageSlideTT;
@@ -31,7 +32,7 @@ public class TTTinDang extends AppCompatActivity implements View.OnClickListener
     private ImageButton btnBack;
     private TextView txtTittle, txtAd, txtGia, txtDienTich, txtMota, txtHuongNha, txtPhapLy
             ,txtUsername;
-    private Button btnUpdate, btnPhone, btnSms, btnViwe;
+    private Button btnUpdate, btnPhone, btnSms, btnViwe, btnMess;
     private CircleImageView imgUser;
     private SliderView sliderView;
     private LinearLayout ln;
@@ -63,6 +64,7 @@ public class TTTinDang extends AppCompatActivity implements View.OnClickListener
         btnSms=findViewById(R.id.tindang_sms);
         ln=findViewById(R.id.ln2);
         btnViwe=findViewById(R.id.btnViewProfile);
+        btnMess=findViewById(R.id.tindang_mess);
     }
 
     private void setListener(){
@@ -70,6 +72,7 @@ public class TTTinDang extends AppCompatActivity implements View.OnClickListener
         btnBack.setOnClickListener(this);
         btnPhone.setOnClickListener(this);
         btnSms.setOnClickListener(this);
+        btnMess.setOnClickListener(this);
     }
 
     private void checkLayout(){
@@ -202,6 +205,33 @@ public class TTTinDang extends AppCompatActivity implements View.OnClickListener
                     }
                 }));
                 break;
+            }
+            case R.id.tindang_mess:{
+                Intent a=getIntent();
+                String s=a.getStringExtra("object");
+                String[] arr=s.split("noikho");
+                TinDang tinDang=new TinDang(arr[0], arr[1], arr[2], arr[3], arr[4], Integer.parseInt(arr[5]),
+                        Long.parseLong(arr[6]), arr[7], arr[8], arr[9], arr[10], Integer.parseInt(arr[11]),
+                        Uri.parse(arr[12]), Uri.parse(arr[13]));
+                if(ParseUser.getCurrentUser()==null){
+                    Toast.makeText(this, "Bạn chưa đăng nhập", Toast.LENGTH_LONG).show();
+                }
+                else if(tinDang.getUserName().equalsIgnoreCase(ParseUser.getCurrentUser().getUsername())==true){
+                    Toast.makeText(this, "Đây là tin đăng của bạn", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    ParseQuery<ParseUser> query=ParseUser.getQuery();
+                    query.whereEqualTo("username", tinDang.getUserName());
+                    query.findInBackground(((objects, e) -> {
+                        if(e==null){
+                            for(ParseUser as:objects){
+                                Intent a2=new Intent(this, Chat.class);
+                                a2.putExtra("objectId", as.getObjectId());
+                                startActivity(a2);
+                            }
+                        }
+                    }));
+                }
             }
         }
 

@@ -40,18 +40,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private RecyclerView re;
     private ListAdapter adapter;
     private SliderView sliderView;
-    private ProgressDialog progressDialog;
     private Button btn1, btn2, btn3;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+        System.out.println("createView");
         View root = binding.getRoot();
         re=root.findViewById(R.id.home_recycle);
         sliderView = root.findViewById(R.id.slider);
         btn1=root.findViewById(R.id.home_muaban);
         btn2=root.findViewById(R.id.home_chothue);
         btn3=root.findViewById(R.id.home_duan);
-        progressDialog=new ProgressDialog(getActivity());
         ArrayList<ImageSlide> sliderDataArrayList = new ArrayList<>();
         sliderDataArrayList.add(new ImageSlide(R.drawable.ban1));
         sliderDataArrayList.add(new ImageSlide(R.drawable.ban2));
@@ -70,14 +69,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void getData(){
-        progressDialog.show();
         ParseQuery<ParseObject> query=ParseQuery.getQuery("postin");
         query.setLimit(2000);
         query.whereEqualTo("tinhtrang","duyệt");
         query.orderByDescending("luotxem");
         query.findInBackground(((objects, e) -> {
             if(e==null){
-                progressDialog.dismiss();
                 setAdapter(objects);
             }
         }));
@@ -111,9 +108,40 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println("resum");
+    }
+
+    @Override
+    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        System.out.println("resum");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        System.out.println("pause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        System.out.println("stop");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        System.out.println("start");
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        System.out.println("destroy");
     }
 
     private void setListener(){

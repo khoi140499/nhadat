@@ -5,31 +5,121 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Chat">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/lnvd"
+        android:orientation="horizontal"
+        android:background="@drawable/textprofile"
+        android:layout_marginBottom="10dp"
+        >
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:stretchColumns="*"
+            >
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="-25dp"
+                    >
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:id="@+id/mess_imgprofile"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_span="9"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:fontFamily="@font/font1"
+                        android:text=""
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:id="@+id/mess_fullname"
+                        android:gravity="center_vertical"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="right"
+                    android:paddingRight="10dp"
+                    >
+                    <ImageButton
+                        android:layout_width="30dp"
+                        android:layout_height="35dp"
+                        android:id="@+id/mess_call"
+                        android:background="@null"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_baseline_call_24"
+                        />
+                    <ImageButton
+                        android:layout_width="30dp"
+                        android:layout_height="35dp"
+                        android:id="@+id/mess_sms"
+                        android:background="@null"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_baseline_sms_24"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        />
+                    <ImageButton
+                        android:layout_width="30dp"
+                        android:layout_height="35dp"
+                        android:id="@+id/mess_info"
+                        android:background="@null"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_baseline_info_24"
+                        />
+
+                </LinearLayout>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="40dp"
         android:id="@+id/recycle_message"
+        android:layout_below="@id/lnvd"
         />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
         >
         <EditText
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:id="@+id/txt_mess"
-            android:layout_toLeftOf="@id/sendbtn"
+            android:id="@+id/txt_send"
+            android:layout_toLeftOf="@id/btn_send"
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"
-            android:textSize="11dp"
+            android:textSize="13dp"
             android:fontFamily="@font/font1"
+            android:background="@drawable/send"
+            android:paddingLeft="20dp"
             />
         <ImageButton
             android:layout_width="40dp"
             android:layout_height="35dp"
-            android:id="@+id/sendbtn"
+            android:id="@+id/btn_send"
             android:background="@null"
             android:src="@drawable/ic_baseline_send_24"
             android:layout_alignParentRight="true"

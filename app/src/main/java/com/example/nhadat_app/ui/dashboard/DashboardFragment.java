@@ -61,7 +61,8 @@ import static android.app.Activity.RESULT_OK;
 
 public class DashboardFragment extends Fragment implements View.OnClickListener {
     private FragmentDashboardBinding binding;
-    private RelativeLayout re_1, re_2;
+    private RelativeLayout re_2;
+    private LinearLayout re_1;
     private Button btnPro, btnDis, btnWard;
     private Button btnSigIn, btnDangTin;
     private SQLiteDatabase db;
