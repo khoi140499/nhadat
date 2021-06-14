@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app1"
+    android:id="@+id/rfdata"
     tools:context=".ui.home.HomeFragment">
     <LinearLayout
         android:layout_width="match_parent"

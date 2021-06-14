@@ -8,27 +8,27 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.nhadat_app.Adapter.ListFollowAdapter;
+import com.example.nhadat_app.Adapter.ListFollowingAdapater;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Follow extends AppCompatActivity {
+public class Following extends AppCompatActivity {
     private RecyclerView re;
-    private ListFollowAdapter adapter;
+    private ListFollowingAdapater adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_follow);
+        setContentView(R.layout.activity_following);
 
         setID();
         loadData();
     }
 
     private void setID(){
-        re=findViewById(R.id.recycle_follows);
+        re=findViewById(R.id.recycle_follows1);
     }
 
     private void loadData(){
@@ -39,7 +39,7 @@ public class Follow extends AppCompatActivity {
 
     private void setData(String s){
         ParseQuery<ParseObject> query=ParseQuery.getQuery("follow");
-        query.whereEqualTo("user_following", s);
+        query.whereEqualTo("user_id", s);
         query.findInBackground((objects, e) -> {
             if(e==null){
                 setArrayList(objects);
@@ -55,7 +55,7 @@ public class Follow extends AppCompatActivity {
         }
 
         re.setLayoutManager(new LinearLayoutManager(this));
-        adapter=new ListFollowAdapter(this, list1);
+        adapter=new ListFollowingAdapater(this, list1);
         re.setAdapter(adapter);
     }
 }

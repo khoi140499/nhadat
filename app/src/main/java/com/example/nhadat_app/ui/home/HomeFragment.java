@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -108,40 +109,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        System.out.println("resum");
-    }
-
-    @Override
-    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        System.out.println("resum");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        System.out.println("pause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        System.out.println("stop");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        System.out.println("start");
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-        System.out.println("destroy");
     }
 
     private void setListener(){

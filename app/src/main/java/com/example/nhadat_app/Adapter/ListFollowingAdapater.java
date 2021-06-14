@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nhadat_app.Model.Follow;
-import com.example.nhadat_app.Model.TinDang;
 import com.example.nhadat_app.R;
 import com.example.nhadat_app.ViewProfile;
 import com.parse.ParseObject;
@@ -31,28 +30,28 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ListFollowAdapter extends RecyclerView.Adapter<ListFollowAdapter.listFollow> {
+public class ListFollowingAdapater extends RecyclerView.Adapter<ListFollowingAdapater.listFollow> {
     private Context context;
     private List<Follow> list;
 
-    public ListFollowAdapter(Context context, List<Follow> list) {
+    public ListFollowingAdapater(Context context, List<Follow> list) {
         this.context = context;
         this.list = list;
     }
 
     @NotNull
     @Override
-    public listFollow onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ListFollowingAdapater.listFollow onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater=LayoutInflater.from(context);
         View v=inflater.inflate(R.layout.followcard, parent, false);
-        return new listFollow(v);
+        return new ListFollowingAdapater.listFollow(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull listFollow holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull ListFollowingAdapater.listFollow holder, int position) {
         Follow a=list.get(position);
         ParseQuery<ParseUser> query=ParseUser.getQuery();
-        query.whereEqualTo("username", a.getUser_id());
+        query.whereEqualTo("username", a.getUser_following());
         query.findInBackground((objects, e) -> {
             if(e==null){
                 for(ParseUser as:objects){
@@ -165,7 +164,7 @@ public class ListFollowAdapter extends RecyclerView.Adapter<ListFollowAdapter.li
             }
             else{
                 Intent as=new Intent(context, ViewProfile.class);
-                as.putExtra("name", a.getUser_id());
+                as.putExtra("name", a.getUser_following());
                 context.startActivity(as);
             }
         }

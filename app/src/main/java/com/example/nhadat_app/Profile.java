@@ -95,7 +95,6 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         rd=findViewById(R.id.profile_rate);
         btnDanhGia=findViewById(R.id.profile_danhgia);
         imageView=findViewById(R.id.imagebackground);
-        back=findViewById(R.id.profile_back);
         fullname=findViewById(R.id.profile_fullname);
         email=findViewById(R.id.profile_email);
         phone=findViewById(R.id.profile_phone);
@@ -116,7 +115,6 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void setListener(){
-        back.setOnClickListener(this);
         btnLogOut.setOnClickListener(this);
         btnUpdate.setOnClickListener(this);
         btnSignIn.setOnClickListener(this);
@@ -187,12 +185,6 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch ((v.getId())){
-            case R.id.profile_back:{
-                Intent a=new Intent(this, MainActivity.class);
-                a.putExtra("type","yes");
-                startActivity(a);
-                break;
-            }
             case R.id.profile_danhgia:{
                 Intent a=new Intent(this, Rating.class);
                 a.putExtra("name", ParseUser.getCurrentUser().getUsername());
@@ -217,11 +209,15 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 break;
             }
             case R.id.profile_btnfollow:{
-
+                Intent a=new Intent(this, Follow.class);
+                a.putExtra("username", ParseUser.getCurrentUser().getUsername());
+                startActivity(a);
                 break;
             }
             case R.id.profile_btnfollowing:{
-
+                Intent a=new Intent(this, Following.class);
+                a.putExtra("username", ParseUser.getCurrentUser().getUsername());
+                startActivity(a);
                 break;
             }
             case R.id.logout:{

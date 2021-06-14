@@ -240,14 +240,18 @@ public class ViewProfile extends AppCompatActivity implements View.OnClickListen
                 break;
             }
             case R.id.btn_follow:{
+                Intent as=getIntent();
+                String name=as.getStringExtra("name");
                 Intent a=new Intent(this, Follow.class);
-                a.putExtra("type", "follow");
+                a.putExtra("username", name);
                 startActivity(a);
                 break;
             }
             case R.id.btn_following:{
-                Intent a=new Intent(this, Follow.class);
-                a.putExtra("type", "following");
+                Intent as=getIntent();
+                String name=as.getStringExtra("name");
+                Intent a=new Intent(this, Following.class);
+                a.putExtra("username", name);
                 startActivity(a);
                 break;
             }

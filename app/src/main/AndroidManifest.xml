@@ -20,8 +20,13 @@
         android:roundIcon="@mipmap/logoimg"
         android:supportsRtl="true"
         android:theme="@style/Theme.NhaDat_App">
-        <activity android:name=".ImageZoom" android:theme="@style/ImageZoom"
-            android:label=""/>
+        <activity android:name=".Following"
+            android:label="Đang theo dõi"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
+        <activity
+            android:name=".ImageZoom"
+            android:label=""
+            android:theme="@style/ImageZoom" />
         <activity android:name=".Chat" />
         <activity
             android:name=".Follow"

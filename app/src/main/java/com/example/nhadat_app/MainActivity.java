@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             channels.add(ParseUser.getCurrentUser().getUsername());
             channels.add(ParseUser.getCurrentUser().getUsername()+"tindang");
             channels.add(ParseUser.getCurrentUser().getUsername()+"follow");
+            channels.add(ParseUser.getCurrentUser().getObjectId()+"message");
             ParseInstallation installation = ParseInstallation.getCurrentInstallation();
             installation.put("GCMSenderId", "267196795826");
             installation.put("channels", channels);
