@@ -5,7 +5,7 @@
     "kind": "Directory"
   },
   "applicationId": "com.example.nhadat_app",
-  "variantName": "release",
+  "variantName": "processReleaseResources",
   "elements": [
     {
       "type": "SINGLE",

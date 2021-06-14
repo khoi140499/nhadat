@@ -61,20 +61,22 @@ public class ListFollowingAdapater extends RecyclerView.Adapter<ListFollowingAda
             }
         });
 
-        ParseQuery<ParseObject> query1=ParseQuery.getQuery("follow");
-        query1.whereEqualTo("user_id",ParseUser.getCurrentUser().getUsername());
-        query1.whereEqualTo("user_following", a.getUser_following());
-        query1.findInBackground((objects, e) -> {
-            if(e==null){
-                if(objects.size()>0){
-                    holder.btn.setTag("unfr");
-                    holder.btn.setImageResource(R.drawable.ic_baseline_person_remove_24);
+        if(ParseUser.getCurrentUser()!=null){
+            ParseQuery<ParseObject> query1=ParseQuery.getQuery("follow");
+            query1.whereEqualTo("user_id",ParseUser.getCurrentUser().getUsername());
+            query1.whereEqualTo("user_following", a.getUser_following());
+            query1.findInBackground((objects, e) -> {
+                if(e==null){
+                    if(objects.size()>0){
+                        holder.btn.setTag("unfr");
+                        holder.btn.setImageResource(R.drawable.ic_baseline_person_remove_24);
+                    }
+                    else{
+                        holder.btn.setTag("fr");
+                    }
                 }
-                else{
-                    holder.btn.setTag("fr");
-                }
-            }
-        });
+            });
+        }
     }
 
     @Override
