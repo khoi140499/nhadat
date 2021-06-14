@@ -63,13 +63,15 @@ public class Message extends Fragment implements View.OnClickListener {
     }
 
     private void setViewRecycleView(){
-        ParseQuery<ParseObject> query=ParseQuery.getQuery("Message");
-        query.whereEqualTo("user_send", ParseUser.getCurrentUser().getObjectId());
-        query.findInBackground((objects, e) -> {
-            if(e==null){
-                setListData(objects);
-            }
-        });
+        if(ParseUser.getCurrentUser()!=null){
+            ParseQuery<ParseObject> query=ParseQuery.getQuery("Message");
+            query.whereEqualTo("user_send", ParseUser.getCurrentUser().getObjectId());
+            query.findInBackground((objects, e) -> {
+                if(e==null){
+                    setListData(objects);
+                }
+            });
+        }
     }
 
     private void setListData(List<ParseObject> listData){

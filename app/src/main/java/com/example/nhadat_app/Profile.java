@@ -186,9 +186,11 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch ((v.getId())){
             case R.id.profile_danhgia:{
-                Intent a=new Intent(this, Rating.class);
-                a.putExtra("name", ParseUser.getCurrentUser().getUsername());
-                startActivity(a);
+                if(ParseUser.getCurrentUser()!=null){
+                    Intent a=new Intent(this, Rating.class);
+                    a.putExtra("name", ParseUser.getCurrentUser().getUsername());
+                    startActivity(a);
+                }
                 break;
             }
             case R.id.chage_profile1:{
@@ -209,15 +211,19 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 break;
             }
             case R.id.profile_btnfollow:{
-                Intent a=new Intent(this, Follow.class);
-                a.putExtra("username", ParseUser.getCurrentUser().getUsername());
-                startActivity(a);
+                if(ParseUser.getCurrentUser()!=null){
+                    Intent a=new Intent(this, Follow.class);
+                    a.putExtra("username", ParseUser.getCurrentUser().getUsername());
+                    startActivity(a);
+                }
                 break;
             }
             case R.id.profile_btnfollowing:{
-                Intent a=new Intent(this, Following.class);
-                a.putExtra("username", ParseUser.getCurrentUser().getUsername());
-                startActivity(a);
+                if(ParseUser.getCurrentUser()!=null){
+                    Intent a=new Intent(this, Following.class);
+                    a.putExtra("username", ParseUser.getCurrentUser().getUsername());
+                    startActivity(a);
+                }
                 break;
             }
             case R.id.logout:{
