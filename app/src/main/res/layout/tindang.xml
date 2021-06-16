@@ -8,8 +8,9 @@
     android:layout_height="102dp">
     <ImageView
         android:contentDescription="@string/app_name"
-        android:layout_width="90dp"
+        android:layout_width="70dp"
         android:layout_height="90dp"
+        android:background="@drawable/bordertd"
         android:layout_gravity="center_vertical"
         android:id="@+id/tinan_img"
         />

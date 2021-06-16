@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.nhadat_app.Model.ChatUser;
 import com.example.nhadat_app.R;
 import com.example.nhadat_app.ViewProfile;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.livequery.ParseLiveQueryClient;
+import com.readystatesoftware.viewbadger.BadgeView;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -37,7 +41,7 @@ public class ListMessageAdapter extends RecyclerView.Adapter<ListMessageAdapter.
         Collections.sort(list, new Comparator<ChatUser>() {
             @Override
             public int compare(ChatUser o1, ChatUser o2) {
-                return o2.getCreateAt().compareTo(o1.getCreateAt());
+                return o1.getCreateAt().compareTo(o2.getCreateAt());
             }
         });
         this.context = context;
@@ -62,6 +66,14 @@ public class ListMessageAdapter extends RecyclerView.Adapter<ListMessageAdapter.
         ChatUser a=list.get(position);
         if(ParseUser.getCurrentUser().getObjectId().equalsIgnoreCase(a.getUser_send())==true
         && a.getUser_receiver().equalsIgnoreCase(objectId)==true){
+//            BadgeDrawable badgeDrawable=BadgeDrawable.create(context);
+//            badgeDrawable.setBackgroundColor(Color.BLUE);
+//            badgeDrawable.setBadgeTextColor(Color.YELLOW);
+//            badgeDrawable.setMaxCharacterCount(5);
+//            badgeDrawable.setNumber(1222);
+//            badgeDrawable.setVisible(true);
+
+
             holder.send.setText(a.getMessage());
             holder.rec.setBackgroundColor(Color.TRANSPARENT);
             System.out.println(a.getUser_send()+" : "+a.getMessage());

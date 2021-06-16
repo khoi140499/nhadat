@@ -40,6 +40,11 @@
                     android:layout_marginLeft="7dp"
                     android:paddingLeft="10dp"
                     />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/image_receiver"
+                    />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,6 +66,11 @@
                     android:gravity="center"
                     android:background="@drawable/messagesend"
                     android:layout_marginLeft="7dp"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/image_send"
                     />
             </LinearLayout>
         </TableRow>

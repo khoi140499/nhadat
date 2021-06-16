@@ -1,6 +1,8 @@
 package com.example.nhadat_app;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,6 +53,7 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
     private CircleImageView img;
     private ImageButton btnInfo, btnCall, btnSms;
     private TextView fullname;
+    private NestedScrollView nestedScrollView;
     private ParseLiveQueryClient parseLiveQueryClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +61,10 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_chat);
 
         setId();
+        loadAllMessage();
         setListener();
         setBack4App();
         setDataProfile();
-        loadAllMessage();
         liveQueryMessage();
 
 
@@ -72,15 +75,13 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
         String s=a.getStringExtra("objectId");
 
         ParseQuery<ParseObject> query=ParseQuery.getQuery("Message");
-        query.orderByAscending("createAt");
+        query.orderByDescending("createAt");
         query.findInBackground((objects, e) -> {
             if(e==null){
                 setListData(objects);
             }
         });
-        re.setLayoutManager(new LinearLayoutManager(this));
-        adapter=new ListMessageAdapter(this, users, s);
-        re.setAdapter(adapter);
+
     }
 
     //set list data when query and filter message
@@ -100,17 +101,12 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
                         as.getCreatedAt()+""));
             }
         }
-        sortList(users);
-    }
-
-    //sort list according createAt
-    private void sortList(List<ChatUser> list){
-        Collections.sort(list, new Comparator<ChatUser>() {
-            @Override
-            public int compare(ChatUser o1, ChatUser o2) {
-                return o1.getCreateAt().compareTo(o2.getCreateAt());
-            }
-        });
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
+        linearLayoutManager.setStackFromEnd(true);
+        re.setLayoutManager(linearLayoutManager);
+        adapter=new ListMessageAdapter(this, users, s);
+        re.setAdapter(adapter);
+        re.smoothScrollToPosition(re.getAdapter().getItemCount());
     }
 
 
@@ -129,8 +125,6 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
                                 @Override
                                 public void run() {
                                     addChat(object);
-                                    sortList(users);
-                                    re.scrollToPosition(0);
                                 }
                             });
                         }
@@ -186,6 +180,8 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
         btnSms=findViewById(R.id.mess_sms);
         img=findViewById(R.id.mess_imgprofile);
         users=new ArrayList<>();
+        nestedScrollView=findViewById(R.id.netscroll);
+
 
     }
 

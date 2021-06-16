@@ -2,6 +2,7 @@ package com.example.nhadat_app;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.example.nhadat_app.Adapter.ListAdapter;
 import com.example.nhadat_app.DB.SQLiteDatabase;
 import com.example.nhadat_app.Model.TinDang;
 import com.example.nhadat_app.checknetwork.ConnectionNetwork;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
@@ -38,6 +40,7 @@ import com.example.nhadat_app.databinding.ActivityMainBinding;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -78,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupWithNavController(binding.navView, navController);
-
 //        =======================================
 
         setID();
@@ -87,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         checkLayout();
         setImageCicrle();
         setListener();
-
     }
 
     //set id
