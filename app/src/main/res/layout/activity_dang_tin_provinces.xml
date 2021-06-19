@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/app1"
+    android:layout_height="fill_parent"
+    tools:context=".DangTinActivity.DangTin_Provinces">
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="Chọn tỉnh, thành phố"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:textAllCaps="true"
+        android:paddingStart="15dp"
+        />
+    <Button
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:id="@+id/dangtin_tinhthanh"
+        android:hint="Chọn tỉnh, thành phố"
+        android:textStyle="normal"
+        android:textColor="@color/black"
+        android:paddingStart="15dp"
+        android:textColorHint="@color/black"
+        android:gravity="left|center_vertical"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="15dp"
+        android:text="Chọn quận, huyện"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:paddingStart="15dp"
+        android:textAllCaps="true"
+        />
+    <Button
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:id="@+id/dangtin_quanhuyen"
+        android:hint="Chọn quận, huyện"
+        android:textStyle="normal"
+        android:textColor="@color/black"
+        android:paddingStart="15dp"
+        android:textColorHint="@color/black"
+        android:gravity="left|center_vertical"
+        />
+    <TextView
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="Chọn phường, xã, thị trấn"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:textAllCaps="true"
+        android:paddingStart="15dp"
+        />
+    <Button
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:id="@+id/dangtin_phuongxa"
+        android:hint="Chọn phường, xã, thị trấn"
+        android:textStyle="normal"
+        android:textColor="@color/black"
+        android:paddingStart="15dp"
+        android:textColorHint="@color/black"
+        android:gravity="left|center_vertical"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        >
+        <Button
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:id="@+id/province_btn"
+            android:text="Tiếp tục"
+            android:fontFamily="@font/font1"
+            android:textColor="@color/colorSigup"
+            android:background="@color/app3"
+            />
+    </LinearLayout>
+</LinearLayout>

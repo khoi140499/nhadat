@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -29,6 +30,7 @@ import com.example.nhadat_app.Model.ImageSlide;
 import com.example.nhadat_app.Model.TinDang;
 import com.example.nhadat_app.R;
 import com.example.nhadat_app.databinding.FragmentHomeBinding;
+import com.google.android.material.card.MaterialCardView;
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -47,7 +49,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private RecyclerView re, reMost;
     private ListAdapter adapter;
     private SliderView sliderView;
-    private Button btn1, btn2, btn3;
+    private MaterialCardView btn1, btn2, btn3;
     private TextView txt1, txt2, txt3;
     private ImageView img1, img2, img3;
     private ListNewAdapter listNewAdapter;
@@ -59,9 +61,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         reMost=root.findViewById(R.id.recycle_hozizontal);
         re=root.findViewById(R.id.home_recycle);
         sliderView = root.findViewById(R.id.slider);
-//        btn1=root.findViewById(R.id.home_muaban);
-//        btn2=root.findViewById(R.id.home_chothue);
-//        btn3=root.findViewById(R.id.home_duan);
+        btn1=root.findViewById(R.id.home_muaban);
+        btn2=root.findViewById(R.id.home_chothue);
+        btn3=root.findViewById(R.id.home_duan);
         img1=root.findViewById(R.id.img_muaban);
         img2=root.findViewById(R.id.img_chothue);
         img3=root.findViewById(R.id.img_duan);
@@ -202,32 +204,40 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setListener(){
-//        btn1.setOnClickListener(this);
-//        btn2.setOnClickListener(this);
-//        btn3.setOnClickListener(this);
+        btn1.setOnClickListener(this);
+        btn2.setOnClickListener(this);
+        btn3.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-//            case R.id.home_chothue:{
-//                Intent a=new Intent(getContext(), ItemDanhMuc.class);
-//                a.putExtra("dmuc", "chothue");
-//                startActivity(a);
-//                break;
-//            }
-//            case R.id.home_duan:{
-//                Intent a=new Intent(getContext(), ItemDanhMuc.class);
-//                a.putExtra("dmuc", "duan");
-//                startActivity(a);
-//                break;
-//            }
-//            case R.id.home_muaban:{
-//                Intent a=new Intent(getContext(), ItemDanhMuc.class);
-//                a.putExtra("dmuc", "muaban");
-//                startActivity(a);
-//                break;
-//            }
+            case R.id.home_chothue:{
+                Intent a=new Intent(getContext(), ItemDanhMuc.class);
+                a.putExtra("dmuc", "chothue");
+                startActivity(a);
+                break;
+            }
+            case R.id.home_duan:{
+                Intent a=new Intent(getContext(), ItemDanhMuc.class);
+                a.putExtra("dmuc", "duan");
+                startActivity(a);
+                break;
+            }
+            case R.id.home_muaban:{
+                Intent a=new Intent(getContext(), ItemDanhMuc.class);
+                a.putExtra("dmuc", "muaban");
+                startActivity(a);
+                break;
+            }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
+        setDataTop();
+        setCategory();
     }
 }

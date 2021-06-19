@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".DangTinActivity.DangTin_Image">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Đăng ảnh giúp tiện cận nhiều người hơn"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:paddingLeft="8dp"
+        >
+        <androidx.cardview.widget.CardView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:cardCornerRadius="10dp"
+            android:id="@+id/dangtin_imagechooser"
+            >
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_camera"
+                android:background="@color/app1"
+                />
+        </androidx.cardview.widget.CardView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:id="@+id/recycle_image"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="5dp"
+            />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="155dp"
+        android:paddingLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorSigup"
+        android:fontFamily="@font/font1"
+        android:textSize="12dp"
+        android:background="@drawable/imagechooser"
+        android:text="Để bán nhanh hơn: \n\n
+        - Xoay camera theo khổ ngang để ảnh hiển thị rõ nét\n
+        - Chụp từ nhiều góc (mặt trước, mặt trong, khổ đất)\n\n Không nên:\n\n
+        - Chụp sổ đỏ của đất hoặc nhà đăng tin\n
+        - Không lấy hình từ trên internet\n
+        - Không chèn các thông tin cá nhân vào ảnh"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        >
+        <Button
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Tiếp tục"
+            android:id="@+id/dangtin_button"
+            android:fontFamily="@font/font1"
+            android:textStyle="bold"
+            android:background="@color/app3"
+            android:textColor="@color/colorSigup"
+            />
+    </LinearLayout>
+</LinearLayout>

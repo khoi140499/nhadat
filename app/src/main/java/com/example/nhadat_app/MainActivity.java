@@ -2,11 +2,13 @@ package com.example.nhadat_app;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView re;
     private ProgressDialog progressDialog;
     private ListAdapter adapter;
+    String[] projection = {MediaStore.MediaColumns.DATA};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +92,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         checkLayout();
         setImageCicrle();
         setListener();
+
+        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                projection, null, null, null);
+        while (cursor.moveToNext()) {
+            String absolutePathOfImage = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA));
+            System.out.println("ảnh "+ absolutePathOfImage);
+        }
+        cursor.close();
     }
 
     //set id
@@ -296,5 +307,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(a);
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 }

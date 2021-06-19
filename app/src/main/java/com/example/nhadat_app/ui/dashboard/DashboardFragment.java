@@ -1,6 +1,7 @@
 package com.example.nhadat_app.ui.dashboard;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -30,6 +32,7 @@ import com.example.nhadat_app.Adapter.ListDistineAdapter;
 import com.example.nhadat_app.Adapter.ListProvincesAdapter;
 import com.example.nhadat_app.Adapter.ListWardAdapter;
 import com.example.nhadat_app.DB.SQLiteDatabase;
+import com.example.nhadat_app.DangTinActivity.DangTIn_DanhMuc;
 import com.example.nhadat_app.Model.Distin;
 import com.example.nhadat_app.Model.Ward;
 import com.example.nhadat_app.Model.province;
@@ -49,6 +52,8 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -147,6 +152,15 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         img2.setOnClickListener(this);
         im1.setOnClickListener(this);
         btnDangTin.setOnClickListener(this);
+    }
+
+    @Override
+    public void onAttach(@NonNull @NotNull Context context) {
+        super.onAttach(context);
+        if(ParseUser.getCurrentUser()!=null){
+            Intent a=new Intent(getContext(), DangTIn_DanhMuc.class);
+            startActivity(a);
+        }
     }
 
     @Override
@@ -365,7 +379,8 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), pick);
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        startActivityForResult(intent, pick);
     }
 
     @Override
@@ -374,16 +389,17 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         if(requestCode == 21 && resultCode == RESULT_OK
                 && data != null && data.getData() != null )
         {
+            System.out.println(data);
             filepath = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), filepath);
-                im1.setImageBitmap(bitmap);
-                uploadImage(txt);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+//            try {
+//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), filepath);
+//                im1.setImageBitmap(bitmap);
+//                uploadImage(txt);
+//            }
+//            catch (IOException e)
+//            {
+//                e.printStackTrace();
+//            }
         }
         else if(requestCode == 20 && resultCode == RESULT_OK
         && data !=null && data.getData()!=null){

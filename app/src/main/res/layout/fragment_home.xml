@@ -14,7 +14,7 @@
         >
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="180dp"
             android:id="@+id/reSlide"
             android:background="@color/app1"
             >
@@ -24,7 +24,7 @@
                 android:id="@+id/slider"
                 android:layout_width="match_parent"
                 android:background="@color/white"
-                android:layout_height="160dp"
+                android:layout_height="180dp"
                 android:layout_centerVertical="true"
                 app:sliderAnimationDuration="600"
                 app:sliderIndicatorAnimationDuration="600"
@@ -73,6 +73,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     app:cardCornerRadius="15dp"
+                    android:id="@+id/home_muaban"
                     android:layout_marginLeft="35dp"
                     android:layout_height="120dp">
                     <ImageView
@@ -111,6 +112,7 @@
                     android:layout_width="match_parent"
                     app:cardCornerRadius="15dp"
                     android:layout_marginLeft="35dp"
+                    android:id="@+id/home_chothue"
                     android:layout_height="120dp">
                     <ImageView
                         android:layout_width="match_parent"
@@ -148,6 +150,7 @@
                     android:layout_width="match_parent"
                     app:cardCornerRadius="15dp"
                     android:layout_marginLeft="35dp"
+                    android:id="@+id/home_duan"
                     android:layout_marginRight="35dp"
                     android:layout_height="120dp">
                     <ImageView

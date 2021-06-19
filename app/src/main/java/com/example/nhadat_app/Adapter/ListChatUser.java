@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nhadat_app.Chat;
 import com.example.nhadat_app.R;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -53,6 +55,52 @@ public class ListChatUser extends RecyclerView.Adapter<ListChatUser.chatUser> {
                 }
             }
         });
+
+        ParseQuery<ParseObject> query1=ParseQuery.getQuery("Message");
+        query1.orderByDescending("createAt");
+        query1.findInBackground((objects, e) -> {
+            if (e == null) {
+                loadData(objects, s, holder.txt1);
+            }
+        });
+
+    }
+
+    //load message into textview
+    private void loadData(List<ParseObject> objects, String s, TextView txt){
+        List<String> al=new ArrayList<>();
+        for(ParseObject as:objects){
+            if(as.getString("user_send").
+                    equalsIgnoreCase(ParseUser.getCurrentUser().getObjectId())==true &&
+                    as.getString("user_receiver").equalsIgnoreCase(s)==true ||
+                    as.getString("user_send").equalsIgnoreCase(s)==true &&
+                            as.getString("user_receiver").
+                                    equalsIgnoreCase(ParseUser.getCurrentUser().getObjectId())==true){
+                al.add(as.getString("user_send")+"noimessage"+as.getString("message"));
+            }
+        }
+
+        if(al.size()>0){
+            String t=al.get(al.size()-1).toString();
+            String[] arr=t.split("noimessage");
+
+            ParseQuery<ParseUser> query2=ParseUser.getQuery();
+            query2.whereEqualTo("objectId", arr[0]);
+            query2.findInBackground((object, e) -> {
+                if(e==null){
+                    for(ParseUser as:object){
+                        if(as.getObjectId().equalsIgnoreCase
+                                (ParseUser.getCurrentUser().getObjectId())==true){
+                            txt.setText("Bạn: "+arr[1]);
+                        }
+                        else{
+                            txt.setText(arr[1]);
+                        }
+                    }
+                }
+            });
+        }
+
     }
 
     @Override
@@ -65,11 +113,12 @@ public class ListChatUser extends RecyclerView.Adapter<ListChatUser.chatUser> {
 
     public class chatUser extends RecyclerView.ViewHolder implements View.OnClickListener {
         private CircleImageView img;
-        private TextView txt;
+        private TextView txt, txt1;
         public chatUser(@NonNull @NotNull View itemView) {
             super(itemView);
             img=itemView.findViewById(R.id.chatuser_img);
             txt=itemView.findViewById(R.id.chatuser_fullname);
+            txt1=itemView.findViewById(R.id.chatuser_messend);
             itemView.setOnClickListener(this);
         }
 
