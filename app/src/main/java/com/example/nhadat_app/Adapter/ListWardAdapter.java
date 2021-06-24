@@ -3,6 +3,7 @@ package com.example.nhadat_app.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,17 +26,13 @@ import java.util.List;
 
 public class ListWardAdapter extends RecyclerView.Adapter<ListWardAdapter.province> {
     private Context context;
-    private Button lu;
-    private LinearLayout li;
-    private ScrollView lk;
     private List<Ward> list;
-
-    public ListWardAdapter(Context context, ArrayList<Ward> list, Button lu, LinearLayout li, ScrollView lk) {
+    private String tinh, quan;
+    public ListWardAdapter(Context context, ArrayList<Ward> list, String quan, String tinh) {
         this.context = context;
         this.list=list;
-        this.lk=lk;
-        this.lu=lu;
-        this.li=li;
+        this.tinh=tinh;
+        this.quan=quan;
     }
 
     public void setData(List<Ward> list){
@@ -75,9 +72,12 @@ public class ListWardAdapter extends RecyclerView.Adapter<ListWardAdapter.provin
         @Override
         public void onClick(View v) {
             int pro=getLayoutPosition();
-            lu.setText(list.get(pro).getWard());
-            li.setVisibility(View.GONE);
-            lk.setVisibility(View.VISIBLE);
+            Intent a=new Intent();
+            a.putExtra("kq",list.get(pro).getWard());
+            a.putExtra("kq-tinh", tinh);
+            a.putExtra("kq-quan", quan);
+            ((Activity)context).setResult(Activity.RESULT_OK, a);
+            ((Activity)context).finish();
         }
     }
 }

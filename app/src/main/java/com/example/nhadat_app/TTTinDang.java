@@ -37,14 +37,27 @@ public class TTTinDang extends AppCompatActivity implements View.OnClickListener
     private SliderView sliderView;
     private LinearLayout ln;
     private RatingBar rd;
+    private TinDang tinDang;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tttin_dang);
+        setTinDang();
+
         setID();
         checkLayout();
         setData();
         setListener();
+    }
+
+    private void setTinDang(){
+        Intent a=getIntent();
+        String s=a.getStringExtra("object");
+        ArrayList<String> list=a.getStringArrayListExtra("list");
+        String[] arr=s.split("noikho");
+        tinDang=new TinDang(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5],
+                Integer.parseInt(arr[6]), Long.parseLong(arr[7]), arr[8], arr[9], arr[10], arr[11],
+                Integer.parseInt(arr[12]), arr[13], list);
     }
 
     private void setID(){
@@ -89,18 +102,8 @@ public class TTTinDang extends AppCompatActivity implements View.OnClickListener
     }
 
     private void setData(){
-        Intent a=getIntent();
-        String s=a.getStringExtra("object");
-        String[] arr=s.split("noikho");
-        TinDang tinDang=new TinDang(arr[0], arr[1], arr[2], arr[3], arr[4], Integer.parseInt(arr[5]),
-                Long.parseLong(arr[6]), arr[7], arr[8], arr[9], arr[10], Integer.parseInt(arr[11]),
-                Uri.parse(arr[12]), Uri.parse(arr[13]));
-        //image
-        ArrayList<ImageSlide> sliderDataArrayList = new ArrayList<>();
-        sliderDataArrayList.add(new ImageSlide(tinDang.getImg1()));
-        sliderDataArrayList.add(new ImageSlide(tinDang.getImg2()));
-        ImageSlideTT adapter = new ImageSlideTT(this, sliderDataArrayList);
-//        sliderView.setAutoCycleDirection(SliderView.LAYOUT_MODE_CLIP_BOUNDS);
+        ImageSlideTT adapter = new ImageSlideTT(this, tinDang.getList());
+
         sliderView.setSliderAdapter(adapter);
         sliderView.setScrollTimeInSec(3);
         sliderView.setAutoCycle(true);
@@ -154,12 +157,6 @@ public class TTTinDang extends AppCompatActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnViewProfile:{
-                Intent a=getIntent();
-                String s=a.getStringExtra("object");
-                String[] arr=s.split("noikho");
-                TinDang tinDang=new TinDang(arr[0], arr[1], arr[2], arr[3], arr[4], Integer.parseInt(arr[5]),
-                        Long.parseLong(arr[6]), arr[7], arr[8], arr[9], arr[10], Integer.parseInt(arr[11]),
-                        Uri.parse(arr[12]), Uri.parse(arr[13]));
                 Intent as=new Intent(this, ViewProfile.class);
                 as.putExtra("name", tinDang.getUserName());
                 startActivity(as);
@@ -170,12 +167,6 @@ public class TTTinDang extends AppCompatActivity implements View.OnClickListener
                 break;
             }
             case R.id.tindang_phone:{
-                Intent a=getIntent();
-                String s=a.getStringExtra("object");
-                String[] arr=s.split("noikho");
-                TinDang tinDang=new TinDang(arr[0], arr[1], arr[2], arr[3], arr[4], Integer.parseInt(arr[5]),
-                        Long.parseLong(arr[6]), arr[7], arr[8], arr[9], arr[10], Integer.parseInt(arr[11]),
-                        Uri.parse(arr[12]), Uri.parse(arr[13]));
                 ParseQuery<ParseUser> query=ParseUser.getQuery();
                 query.whereEqualTo("username", tinDang.getUserName());
                 query.findInBackground(((objects, e) -> {
@@ -189,12 +180,6 @@ public class TTTinDang extends AppCompatActivity implements View.OnClickListener
                 break;
             }
             case R.id.tindang_sms:{
-                Intent a=getIntent();
-                String s=a.getStringExtra("object");
-                String[] arr=s.split("noikho");
-                TinDang tinDang=new TinDang(arr[0], arr[1], arr[2], arr[3], arr[4], Integer.parseInt(arr[5]),
-                        Long.parseLong(arr[6]), arr[7], arr[8], arr[9], arr[10], Integer.parseInt(arr[11]),
-                        Uri.parse(arr[12]), Uri.parse(arr[13]));
                 ParseQuery<ParseUser> query=ParseUser.getQuery();
                 query.whereEqualTo("username", tinDang.getUserName());
                 query.findInBackground(((objects, e) -> {
@@ -207,12 +192,6 @@ public class TTTinDang extends AppCompatActivity implements View.OnClickListener
                 break;
             }
             case R.id.tindang_mess:{
-                Intent a=getIntent();
-                String s=a.getStringExtra("object");
-                String[] arr=s.split("noikho");
-                TinDang tinDang=new TinDang(arr[0], arr[1], arr[2], arr[3], arr[4], Integer.parseInt(arr[5]),
-                        Long.parseLong(arr[6]), arr[7], arr[8], arr[9], arr[10], Integer.parseInt(arr[11]),
-                        Uri.parse(arr[12]), Uri.parse(arr[13]));
                 if(ParseUser.getCurrentUser()==null){
                     Toast.makeText(this, "Bạn chưa đăng nhập", Toast.LENGTH_LONG).show();
                 }
@@ -236,6 +215,7 @@ public class TTTinDang extends AppCompatActivity implements View.OnClickListener
         }
 
     }
+
     private void setDATA(String phone){
         Intent as=new Intent(Intent.ACTION_DIAL);
         as.setData(Uri.parse("tel:"+phone));

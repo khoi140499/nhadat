@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.nhadat_app.Adapter.ListDanhMucAdapter;
+import com.example.nhadat_app.MainActivity;
 import com.example.nhadat_app.R;
 
 import java.util.ArrayList;
@@ -42,9 +44,21 @@ public class DangTIn_DanhMuc extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                setInent();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        setInent();
+    }
+
+    private void setInent(){
+        Intent a=new Intent(this, MainActivity.class);
+        a.putExtra("type", "yes");
+        startActivity(a);
     }
 }

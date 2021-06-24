@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.nhadat_app.Adapter.ListAdapter;
 import com.example.nhadat_app.Adapter.ListProvincesAdapter;
+import com.example.nhadat_app.Model.ImagePost;
 import com.example.nhadat_app.Model.TinDang;
 import com.example.nhadat_app.Model.province;
 import com.parse.FindCallback;
@@ -28,7 +29,10 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class ItemDanhMuc extends AppCompatActivity implements View.OnClickListener {
     private ImageButton btnBack;
@@ -40,6 +44,7 @@ public class ItemDanhMuc extends AppCompatActivity implements View.OnClickListen
     private LinearLayout ln, ln1;
     private Spinner danhmuc, sapxep;
     private ScrollView sc;
+    private List<ImagePost> imagePosts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +71,7 @@ public class ItemDanhMuc extends AppCompatActivity implements View.OnClickListen
         ln1=findViewById(R.id.filter_ds);
         sc=findViewById(R.id.crolls);
         btnb=findViewById(R.id.filter_back);
+        imagePosts=new ArrayList<>();
     }
 
     private void setListener(){
@@ -98,41 +104,74 @@ public class ItemDanhMuc extends AppCompatActivity implements View.OnClickListen
         try {
             String s=a.getStringExtra("dmuc");
             if(s.equalsIgnoreCase("muaban")==true){
-                getData("Mua bán");
+                getImage("Mua bán");
             }
             else if(s.equalsIgnoreCase("chothue")==true){
-                getData("Cho thuê");
+                getImage("Cho thuê");
             }
             else if(s.equalsIgnoreCase("duan")==true){
-                getData("Dự án");
+                getImage("Dự án");
             }
         }catch (NullPointerException e){}
     }
 
-    private void getData(String s){
+    //get all image from class ImagePost
+    private void getImage(String s){
+        ParseQuery<ParseObject> query=ParseQuery.getQuery("ImagePost");
+        query.findInBackground((objects, e) -> {
+            if(e==null){
+                setListImage(objects, s);
+            }
+        });
+    }
 
+    //set list image with object id of class postin
+    private void setListImage(List<ParseObject> list, String s) {
+        HashSet<String> hs=new HashSet<>();
+        for (ParseObject as:list){
+            imagePosts.add(new ImagePost(as.getParseObject("post_id"),
+                    as.getParseFile("img").getUrl()+""));
+        }
+
+        for(ImagePost as:imagePosts){
+            hs.add(as.getPost_id().getObjectId());
+        }
+        HashMap<String, List<String>> hashMap=new HashMap<String, List<String>>();
+        List<String> a;
+        for(String ass:hs){
+            a=new ArrayList<>();
+            for(ParseObject as:list){
+                if(ass.toString().equalsIgnoreCase(as.getParseObject("post_id").getObjectId())==true){
+                    a.add(as.getParseFile("img").getUrl()+"");
+                }
+            }
+            hashMap.put(ass.toString(), a);
+        }
         ParseQuery<ParseObject> query=ParseQuery.getQuery("postin");
         query.whereEqualTo("danhmuc", s);
         query.whereEqualTo("tinhtrang", "duyệt");
         query.findInBackground(((objects, e) -> {
             if(e==null){
-                viewData(objects);
+                viewData(objects, hashMap);
             }
         }));
     }
 
-    private void viewData(List<ParseObject> objects){
+    private void viewData(List<ParseObject> objects, HashMap<String, List<String>> hs){
         ArrayList<TinDang> tinDangs=new ArrayList<>();
-        for (ParseObject as:objects){
-            tinDangs.add(new com.example.nhadat_app.Model.TinDang(as.getString("name"),
-                    as.getString("danhmuc"), as.getString("tinh"),
-                    as.getString("huyen"), as.getString("xa"),
-                    Integer.parseInt(as.getString("dientich")),
-                    Long.parseLong(as.getString("gia")), as.getString("phaply"),
-                    as.getString("huongnha"), as.getString("tittle"),
-                    as.getString("mota"), as.getInt("luotxem"),
-                    Uri.parse(as.getString("img1")), Uri.parse(as.getString("img2")),
-                    as.getString("timeUp")));
+        for(ParseObject as:objects){
+            for(Map.Entry<String, List<String>> sa:hs.entrySet()){
+                if(as.getObjectId().equalsIgnoreCase(sa.getKey())==true){
+                    tinDangs.add(new com.example.nhadat_app.Model.TinDang(as.getObjectId(),
+                            as.getString("name"), as.getString("danhmuc"),
+                            as.getString("tinh"), as.getString("huyen"),
+                            as.getString("xa"), Integer.parseInt(as.getString("dientich")),
+                            Long.parseLong(as.getString("gia")), as.getString("phaply"),
+                            as.getString("huongnha"), as.getString("tittle"),
+                            as.getString("mota"), as.getInt("luotxem"),
+                            as.getString("timeUp"), (ArrayList<String>) sa.getValue()));
+                }
+            }
         }
         re.setLayoutManager(new LinearLayoutManager(this));
         adapter=new ListAdapter(tinDangs, this, ParseUser.getCurrentUser());
@@ -164,10 +203,10 @@ public class ItemDanhMuc extends AppCompatActivity implements View.OnClickListen
                 String gia2=txt2.getText().toString();
 
                 if(sxgia.equalsIgnoreCase("Giá")==true){
-                    setDataRecycleView(tinh, dm, "gia", gia1, gia2);
+                    getAllImageFilter(tinh, dm, "gia", gia1, gia2);
                 }
                 else if(sxgia.equalsIgnoreCase("Lượt xem")==true){
-                    setDataRecycleView(tinh, dm, "luotxem", gia1, gia2);
+                    getAllImageFilter(tinh, dm, "luotxem", gia1, gia2);
                 }
                 break;
             }
@@ -178,14 +217,46 @@ public class ItemDanhMuc extends AppCompatActivity implements View.OnClickListen
         }
     }
 
-    private void setDataRecycleView(String tinh, String danhmuc, String sxgia,
-                                    String gia1, String gia2){
+    //get image filter
+    private void getAllImageFilter(String tinh, String danhmuc, String sxgia,
+                                   String gia1, String gia2){
+        ParseQuery<ParseObject> query=ParseQuery.getQuery("ImagePost");
+        query.findInBackground((objects, e) -> {
+            if(e==null){
+                setDataRecycleView(objects, tinh, danhmuc, sxgia, gia1, gia2);
+            }
+        });
+    }
+
+    private void setDataRecycleView(List<ParseObject> list, String tinh, String danhmuc,
+                                    String sxgia, String gia1, String gia2){
+        HashSet<String> hs=new HashSet<>();
+        for (ParseObject as:list){
+            imagePosts.add(new ImagePost(as.getParseObject("post_id"),
+                    as.getParseFile("img").getUrl()+""));
+        }
+
+        for(ImagePost as:imagePosts){
+            hs.add(as.getPost_id().getObjectId());
+        }
+        HashMap<String, List<String>> hashMap=new HashMap<String, List<String>>();
+        List<String> a;
+        for(String ass:hs){
+            a=new ArrayList<>();
+            for(ParseObject as:list){
+                if(ass.toString().equalsIgnoreCase(as.getParseObject("post_id").getObjectId())==true){
+                    a.add(as.getParseFile("img").getUrl()+"");
+                }
+            }
+            hashMap.put(ass.toString(), a);
+        }
+
         ParseQuery<ParseObject> query=ParseQuery.getQuery("postin");
         query.whereEqualTo("tinhtrang", "duyệt");
         query.orderByDescending(sxgia);
         query.findInBackground(((objects, e) -> {
             if(e==null){
-                filterData(objects, danhmuc, tinh, gia1, gia2);
+                filterData(objects, danhmuc, tinh, gia1, gia2, hashMap);
             }
             else{
                 Toast.makeText(this, "Không tìm thấy kết quả", Toast.LENGTH_LONG).show();
@@ -194,22 +265,25 @@ public class ItemDanhMuc extends AppCompatActivity implements View.OnClickListen
     }
 
     private void filterData(List<ParseObject> objects, String danhmuc, String tinh,
-                            String gia1, String gia2){
+                            String gia1, String gia2, HashMap<String, List<String>> hs){
         ArrayList<TinDang> td=new ArrayList<>();
         for (ParseObject as:objects){
             if(as.getString("tinh").equalsIgnoreCase(tinh)==true &&
                     as.getString("danhmuc").equalsIgnoreCase(danhmuc)==true&&
                     Long.parseLong(as.getString("gia"))>=Long.parseLong(gia1) &&
                     Long.parseLong(as.getString("gia"))<=Long.parseLong(gia2)){
-                td.add(new com.example.nhadat_app.Model.TinDang(as.getString("name"),
-                        as.getString("danhmuc"), as.getString("tinh"),
-                        as.getString("huyen"), as.getString("xa"),
-                        Integer.parseInt(as.getString("dientich")),
-                        Long.parseLong(as.getString("gia")), as.getString("phaply"),
-                        as.getString("huongnha"), as.getString("tittle"),
-                        as.getString("mota"), as.getInt("luotxem"),
-                        Uri.parse(as.getString("img1")), Uri.parse(as.getString("img2")),
-                        as.getString("timeUp")));
+                for(Map.Entry<String, List<String>> sa:hs.entrySet()){
+                    if(as.getObjectId().equalsIgnoreCase(sa.getKey())==true){
+                        td.add(new com.example.nhadat_app.Model.TinDang(as.getObjectId(),
+                                as.getString("name"), as.getString("danhmuc"),
+                                as.getString("tinh"), as.getString("huyen"),
+                                as.getString("xa"), Integer.parseInt(as.getString("dientich")),
+                                Long.parseLong(as.getString("gia")), as.getString("phaply"),
+                                as.getString("huongnha"), as.getString("tittle"),
+                                as.getString("mota"), as.getInt("luotxem"),
+                                as.getString("timeUp"), (ArrayList<String>) sa.getValue()));
+                    }
+                }
             }
         }
         re.setLayoutManager(new LinearLayoutManager(this));
@@ -239,7 +313,7 @@ public class ItemDanhMuc extends AppCompatActivity implements View.OnClickListen
             list.add(new province(String.valueOf(as.getInt("code")), as.getString("name")));
         }
         reds.setLayoutManager(new LinearLayoutManager(this));
-        provincesAdapter=new ListProvincesAdapter(this, list, btn, ln1, sc);
+        provincesAdapter=new ListProvincesAdapter(this, list);
         reds.setAdapter(provincesAdapter);
     }
 }

@@ -69,8 +69,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listA> {
         else if(a.getGia()/1000000000>0){
             holder.gia.setText((long)a.getGia()/1000000000+" tỉ");
         }
-        Picasso.get().load(a.getImg1()).into(holder.img);
-
+        List<String> ln=a.getList();
+        Picasso.get().load(ln.get(0).toString()).into(holder.img);
+        holder.txt.setText(a.getList().size()+"");
         String s=Calendar.getInstance().getTime()+"";
         String[] arr=s.split(" ");
         String date=arr[2]+" "+arr[1]+" "+arr[5]+" "+arr[3];
@@ -167,6 +168,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listA> {
     }
 
     public class listA extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView txt;
         private ImageView img;
         private TextView tittle;
         private TextView gia;
@@ -185,6 +187,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listA> {
             username=itemView.findViewById(R.id.card_username);
             diaChi=itemView.findViewById(R.id.card_add);
             save=itemView.findViewById(R.id.save);
+            txt=itemView.findViewById(R.id.image_count);
             save.setOnClickListener(this);
             itemView.setOnClickListener(this);
         }
@@ -245,6 +248,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listA> {
                         object.saveInBackground(e1 -> {
                             Intent as=new Intent(context, TTTinDang.class);
                             as.putExtra("object", a.toString());
+                            as.putStringArrayListExtra("list", a.getList());
                             as.putExtra("type", "yes");
                             context.startActivity(as);
                         });

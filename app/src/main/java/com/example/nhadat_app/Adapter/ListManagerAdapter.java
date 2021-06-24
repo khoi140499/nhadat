@@ -48,7 +48,7 @@ public class ListManagerAdapter extends RecyclerView.Adapter<ListManagerAdapter.
     @Override
     public void onBindViewHolder(@NonNull @NotNull tinDang holder, int position) {
         TinDang a=list.get(position);
-        Picasso.get().load(a.getImg1()).into(holder.img);
+        Picasso.get().load(a.getList().get(0).toString()).into(holder.img);
         holder.tittle.setText(a.getTieuDe());
         if(a.getGia()/1000000>0 && a.getGia()/1000000<=999){
             holder.gia.setText((long)a.getGia()/1000000+" triệu");
@@ -95,6 +95,8 @@ public class ListManagerAdapter extends RecyclerView.Adapter<ListManagerAdapter.
                         if(item.getItemId()==R.id.btntindangupdate){
                             Intent a=new Intent(context, UpdateItem.class);
                             a.putExtra("object", as.toString());
+                            a.putStringArrayListExtra("list",as.getList());
+                            a.putExtra("type", "tindang");
                             context.startActivity(a);
                         }
                         if(item.getItemId() == R.id.btntindangxoa){
@@ -128,6 +130,7 @@ public class ListManagerAdapter extends RecyclerView.Adapter<ListManagerAdapter.
             else{
                 Intent a=new Intent(context, TTTinDang.class);
                 a.putExtra("object", as.toString());
+                a.putStringArrayListExtra("list", as.getList());
                 context.startActivity(a);
             }
         }

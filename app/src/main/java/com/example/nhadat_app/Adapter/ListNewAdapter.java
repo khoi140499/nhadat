@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -62,7 +63,8 @@ public class ListNewAdapter extends RecyclerView.Adapter<ListNewAdapter.listNew>
         else if(a.getGia()/1000000000>0){
             holder.gia.setText((long)a.getGia()/1000000000+" tỉ - "+a.getDienTich()+"m2");
         }
-        Picasso.get().load(a.getImg1()).into(holder.img);
+        List<String> str=a.getList();
+        Picasso.get().load(Uri.parse(str.get(0).toString())).into(holder.img);
         holder.luotxem.setText(a.getLuotxem()+"");
     }
 
@@ -99,9 +101,13 @@ public class ListNewAdapter extends RecyclerView.Adapter<ListNewAdapter.listNew>
                         object.saveInBackground(e1 -> {
                             Intent as=new Intent(context, TTTinDang.class);
                             as.putExtra("object", a.toString());
+                            as.putStringArrayListExtra("list", a.getList());
                             as.putExtra("type", "yes");
                             context.startActivity(as);
                         });
+                    }
+                    else{
+                        Toast.makeText(context, "Đã xảy ra lỗi", Toast.LENGTH_SHORT).show();
                     }
                 }));
             }

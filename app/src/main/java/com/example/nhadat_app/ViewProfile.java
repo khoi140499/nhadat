@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nhadat_app.Adapter.ListAdapter;
+import com.example.nhadat_app.Model.ImagePost;
 import com.example.nhadat_app.Model.TinDang;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
@@ -26,7 +27,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -38,13 +42,14 @@ public class ViewProfile extends AppCompatActivity implements View.OnClickListen
     private ListAdapter adapter;
     private Button btnDanhGia, btnFollow, btnFolowing, btnFL;
     private RatingBar rd;
-
+    private List<ImagePost> imagePosts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
         setID();
         setListener();
+        getImage();
         setViewData();
     }
     private void setID(){
@@ -62,6 +67,7 @@ public class ViewProfile extends AppCompatActivity implements View.OnClickListen
         btnFollow=findViewById(R.id.btn_follow);
         btnFolowing=findViewById(R.id.btn_following);
         btnFL=findViewById(R.id.viewprofile_follow);
+        imagePosts=new ArrayList<>();
     }
 
     private void setListener(){
@@ -88,7 +94,6 @@ public class ViewProfile extends AppCompatActivity implements View.OnClickListen
                 }
             }
         }));
-        setViewRecycleView(name);
 
         ParseQuery<ParseObject> query1=ParseQuery.getQuery("rating");
         query1.whereEqualTo("namepost", name);
@@ -139,33 +144,71 @@ public class ViewProfile extends AppCompatActivity implements View.OnClickListen
         }
         rd.setRating(diem/list.size());
     }
-    private void setViewRecycleView(String name){
+
+    //get all image from class ImagePost
+    private void getImage(){
+        ParseQuery<ParseObject> query=ParseQuery.getQuery("ImagePost");
+        query.findInBackground((objects, e) -> {
+            if(e==null){
+                setListImage(objects);
+            }
+        });
+    }
+
+    //set list image with object id of class postin
+    private void setListImage(List<ParseObject> list) {
+        HashSet<String> hs=new HashSet<>();
+        for (ParseObject as:list){
+            imagePosts.add(new ImagePost(as.getParseObject("post_id"),
+                    as.getParseFile("img").getUrl()+""));
+        }
+
+        for(ImagePost as:imagePosts){
+            hs.add(as.getPost_id().getObjectId());
+        }
+        HashMap<String, List<String>> hashMap=new HashMap<String, List<String>>();
+        List<String> a;
+        for(String ass:hs){
+            a=new ArrayList<>();
+            for(ParseObject as:list){
+                if(ass.toString().equalsIgnoreCase(as.getParseObject("post_id").getObjectId())==true){
+                    a.add(as.getParseFile("img").getUrl()+"");
+                }
+            }
+            hashMap.put(ass.toString(), a);
+        }
+        Intent as=getIntent();
+        String name=as.getStringExtra("name");
         ParseQuery<ParseObject> query=ParseQuery.getQuery("postin");
         query.whereEqualTo("name", name);
         query.findInBackground(((objects, e) -> {
             if(e==null){
-                setList(objects);
+                setList(objects, hashMap);
             }
         }));
     }
 
-    private void setList(List<ParseObject> list){
+    //set adapter recycle view
+    private void setList(List<ParseObject> list, HashMap<String, List<String>> hs){
         ArrayList<TinDang> tinDangs=new ArrayList<>();
         for(ParseObject as:list){
-            tinDangs.add(new com.example.nhadat_app.Model.TinDang(as.getObjectId(),as.getString("name"),
-                    as.getString("danhmuc"), as.getString("tinh"),
-                    as.getString("huyen"), as.getString("xa"),
-                    Integer.parseInt(as.getString("dientich")),
-                    Long.parseLong(as.getString("gia")), as.getString("phaply"),
-                    as.getString("huongnha"), as.getString("tittle"),
-                    as.getString("mota"), as.getInt("luotxem"),
-                    Uri.parse(as.getString("img1")), Uri.parse(as.getString("img2")),
-                    as.getString("timeUp")));
+            for(Map.Entry<String, List<String>> sa:hs.entrySet()){
+                if(as.getObjectId().equalsIgnoreCase(sa.getKey())==true){
+                    tinDangs.add(new com.example.nhadat_app.Model.TinDang(as.getObjectId(),
+                            as.getString("name"), as.getString("danhmuc"),
+                            as.getString("tinh"), as.getString("huyen"),
+                            as.getString("xa"), Integer.parseInt(as.getString("dientich")),
+                            Long.parseLong(as.getString("gia")), as.getString("phaply"),
+                            as.getString("huongnha"), as.getString("tittle"),
+                            as.getString("mota"), as.getInt("luotxem"),
+                            as.getString("timeUp"), (ArrayList<String>) sa.getValue()));
+                }
+            }
         }
         re.setLayoutManager(new LinearLayoutManager(this));
-        adapter=new com.example.nhadat_app.Adapter.ListAdapter(tinDangs, this, ParseUser.getCurrentUser());
+        adapter=new com.example.nhadat_app.Adapter.ListAdapter(tinDangs,
+                this, ParseUser.getCurrentUser());
         re.setAdapter(adapter);
-
         txtCount.setText("Tin đang hiển thị - "+tinDangs.size()+" tin");
     }
 

@@ -50,7 +50,7 @@ public class ListAdminAdapter extends RecyclerView.Adapter<ListAdminAdapter.tinD
     @Override
     public void onBindViewHolder(@NonNull  tinDang holder, int position) {
         TinDang a=list.get(position);
-        Picasso.get().load(a.getImg1()).into(holder.img);
+        Picasso.get().load(a.getList().get(0).toString()).into(holder.img);
         holder.tittle.setText(a.getTieuDe());
         if(a.getGia()/1000000>0 && a.getGia()/1000000<=999){
             holder.gia.setText((long)a.getGia()/1000000+" triệu");

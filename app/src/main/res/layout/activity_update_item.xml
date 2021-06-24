@@ -27,19 +27,6 @@
         android:layout_height="match_parent"
         android:id="@+id/fragment_dangtin"
         >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/lozz"
-            android:visibility="gone"
-            android:background="@color/white"
-            >
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/recycle_dsud"
-                />
-        </LinearLayout>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -54,23 +41,32 @@
                 >
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="80dp"
                     android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:background="@drawable/textprofile"
+                    android:paddingLeft="8dp"
                     >
-                    <ImageView
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:id="@+id/img_update1"
-                        android:background="@drawable/image"
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        app:cardCornerRadius="10dp"
+
+                        >
+                        <ImageButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_camera"
+                            android:background="@color/app1"
+                            android:id="@+id/update_addimage"
+                            />
+                    </androidx.cardview.widget.CardView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="wrap_content"
+                        android:layout_height="80dp"
+                        android:id="@+id/recycle_updateimage"
+                        android:layout_marginLeft="8dp"
                         android:layout_marginRight="5dp"
-                        />
-                    <ImageView
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:id="@+id/img_update2"
-                        android:background="@drawable/image"
                         />
                 </LinearLayout>
                 <RelativeLayout
@@ -112,6 +108,7 @@
                         android:text="Danh mục tin đăng"
                         />
                     <Spinner
+                        android:layout_marginTop="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:id="@+id/sp_danhmucupdate"
@@ -122,11 +119,13 @@
                         android:textSize="13dp"
                         />
                     <TextView
+                        android:layout_marginTop="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Chọn tỉnh"
                         />
-                    <Button
+                    <TextView
+                        android:layout_marginTop="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:id="@+id/btn_tinhthanhud"
@@ -137,12 +136,14 @@
                         android:textSize="13dp"
                         />
                     <TextView
+                        android:layout_marginTop="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Chọn quận, huyện"
 
                         />
-                    <Button
+                    <TextView
+                        android:layout_marginTop="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:id="@+id/btn_quanud"
@@ -153,12 +154,14 @@
                         android:textSize="13dp"
                         />
                     <TextView
+                        android:layout_marginTop="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Chọn phường, xã, thị trấn"
                         android:fitsSystemWindows="true"
                         />
-                    <Button
+                    <TextView
+                        android:layout_marginTop="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:id="@+id/btn_phuongud"
@@ -169,11 +172,13 @@
                         android:textSize="13dp"
                         />
                     <TextView
+                        android:layout_marginTop="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Diện tích (m2)"
                         />
                     <EditText
+                        android:layout_marginTop="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:background="@drawable/textprofile"
@@ -185,11 +190,13 @@
                         android:textSize="13dp"
                         />
                     <TextView
+                        android:layout_marginTop="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Giá (VN đồng)"
                         />
                     <EditText
+                        android:layout_marginTop="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:background="@drawable/textprofile"
@@ -202,11 +209,13 @@
                         android:layout_marginBottom="5dp"
                         />
                     <TextView
+                        android:layout_marginTop="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Hướng nhà"
                         />
                     <EditText
+                        android:layout_marginTop="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:background="@drawable/textprofile"
@@ -218,11 +227,13 @@
                         android:layout_marginBottom="5dp"
                         />
                     <TextView
+                        android:layout_marginTop="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Pháp lý"
                         />
                     <EditText
+                        android:layout_marginTop="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:background="@drawable/textprofile"
@@ -233,11 +244,13 @@
                         android:textSize="13dp"
                         />
                     <TextView
+                        android:layout_marginTop="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Tiêu đề tin đăng"
                         />
                     <EditText
+                        android:layout_marginTop="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:background="@drawable/textprofile"
@@ -248,11 +261,13 @@
                         android:textSize="13dp"
                         />
                     <TextView
+                        android:layout_marginTop="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Mô tả"
                         />
                     <EditText
+                        android:layout_marginTop="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:lines="6"
@@ -267,16 +282,22 @@
                         />
                 </LinearLayout>
                 <Button
-                    android:layout_width="150dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/border"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
                     android:text="Cập nhật"
                     android:layout_marginTop="15dp"
                     android:layout_gravity="center"
                     android:id="@+id/btn_dangtinup"
-                    android:fontFamily="@font/font1"
-                    android:layout_marginBottom="70dp"
-                    android:textColor="@color/black"
+                    android:background="@color/app3"
+                    android:visibility="gone"
+                    />
+                <Button
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:text="Đăng tin"
+                    android:id="@+id/update_Dangtin"
+                    android:background="@color/app3"
                     />
             </LinearLayout>
         </ScrollView>

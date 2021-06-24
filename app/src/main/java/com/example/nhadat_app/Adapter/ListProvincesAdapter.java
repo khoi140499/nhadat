@@ -2,6 +2,8 @@ package com.example.nhadat_app.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nhadat_app.DangTinActivity.DangTin_Provinces;
 import com.example.nhadat_app.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,18 +25,12 @@ import java.util.List;
 
 public class ListProvincesAdapter extends RecyclerView.Adapter<ListProvincesAdapter.province> {
     private Context context;
-    private Button lu;
-    private LinearLayout li;
-    private ScrollView lk;
+    private String lu;
     private List<com.example.nhadat_app.Model.province> list;
 
-    public ListProvincesAdapter(Context context, ArrayList<com.example.nhadat_app.Model.province> list,
-                                Button lu, LinearLayout li, ScrollView lk) {
+    public ListProvincesAdapter(Context context, ArrayList<com.example.nhadat_app.Model.province> list) {
         this.context = context;
         this.list=list;
-        this.lk=lk;
-        this.lu=lu;
-        this.li=li;
     }
 
     public void setData(List<com.example.nhadat_app.Model.province> list){
@@ -73,9 +70,10 @@ public class ListProvincesAdapter extends RecyclerView.Adapter<ListProvincesAdap
         @Override
         public void onClick(View v) {
             int pro=getLayoutPosition();
-            lu.setText(list.get(pro).getProvince());
-            li.setVisibility(View.GONE);
-            lk.setVisibility(View.VISIBLE);
+            Intent a=new Intent();
+            a.putExtra("kq", list.get(pro).getProvince());
+            ((Activity)context).setResult(Activity.RESULT_OK, a);
+            ((Activity)context).finish();
         }
     }
 }

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.nhadat_app.Adapter.ListAdapter;
 import com.example.nhadat_app.DB.SQLiteDatabase;
+import com.example.nhadat_app.Model.ImagePost;
 import com.example.nhadat_app.Model.TinDang;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -24,7 +25,10 @@ import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -41,6 +45,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     private ListAdapter adapter;
     private ImageView imageView;
     private RatingBar rd;
+    private List<ImagePost> imagePosts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +53,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
 
         setID();
         setListener();
-        db=new SQLiteDatabase(this);
+        imagePosts=new ArrayList<>();
         setViewData();
         if(ParseUser.getCurrentUser()==null){
             re_1.setVisibility(View.GONE);
@@ -83,6 +88,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    //tinh rating
     private void calculatorRate(List<ParseObject> list,RatingBar rd){
         float diem=0;
         for(ParseObject as:list){
@@ -130,21 +136,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
 
     private void setViewData(){
         if(ParseUser.getCurrentUser()!=null){
-            ParseQuery<ParseObject> query=ParseQuery.getQuery("SavePostin");
-            query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
-            query.findInBackground(((objects, e) -> {
-                if(e==null){
-                    for(ParseObject as:objects){
-                        ParseQuery<ParseObject> query1=ParseQuery.getQuery("postin");
-                        query1.whereEqualTo("objectId", as.getString("tinDang"));
-                        query1.findInBackground(((objects1, e1) -> {
-                            if(e1==null){
-                                setView(objects1);
-                            }
-                        }));
-                    }
-                }
-            }));
+            getImage();
 
             ParseQuery<ParseObject> query2=ParseQuery.getQuery("follow");
             query2.whereEqualTo("user_id", ParseUser.getCurrentUser().getUsername());
@@ -164,21 +156,75 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    private void setView(List<ParseObject> list){
+
+    //get all image from class ImagePost
+    private void getImage(){
+        ParseQuery<ParseObject> query=ParseQuery.getQuery("ImagePost");
+        query.findInBackground((objects, e) -> {
+            if(e==null){
+                setListImage(objects);
+            }
+        });
+    }
+
+    //set list image with object id of class postin
+    private void setListImage(List<ParseObject> list) {
+        HashSet<String> hs=new HashSet<>();
+        for (ParseObject as:list){
+            imagePosts.add(new ImagePost(as.getParseObject("post_id"),
+                    as.getParseFile("img").getUrl()+""));
+        }
+
+        for(ImagePost as:imagePosts){
+            hs.add(as.getPost_id().getObjectId());
+        }
+        HashMap<String, List<String>> hashMap=new HashMap<String, List<String>>();
+        List<String> a;
+        for(String ass:hs){
+            a=new ArrayList<>();
+            for(ParseObject as:list){
+                if(ass.toString().equalsIgnoreCase(as.getParseObject("post_id").getObjectId())==true){
+                    a.add(as.getParseFile("img").getUrl()+"");
+                }
+            }
+            hashMap.put(ass.toString(), a);
+        }
+        ParseQuery<ParseObject> query=ParseQuery.getQuery("SavePostin");
+        query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
+        query.findInBackground(((objects, e) -> {
+            if(e==null){
+                for(ParseObject as:objects){
+                    ParseQuery<ParseObject> query1=ParseQuery.getQuery("postin");
+                    query1.whereEqualTo("objectId", as.getString("tinDang"));
+                    query1.findInBackground(((objects1, e1) -> {
+                        if(e1==null){
+                            setView(objects1, hashMap);
+                        }
+                    }));
+                }
+            }
+        }));
+    }
+
+    private void setView(List<ParseObject> list, HashMap<String, List<String>> hs){
         ArrayList<TinDang> tinDangs=new ArrayList<>();
         for(ParseObject as:list){
-            tinDangs.add(new com.example.nhadat_app.Model.TinDang(as.getObjectId(),as.getString("name"),
-                    as.getString("danhmuc"), as.getString("tinh"),
-                    as.getString("huyen"), as.getString("xa"),
-                    Integer.parseInt(as.getString("dientich")),
-                    Long.parseLong(as.getString("gia")), as.getString("phaply"),
-                    as.getString("huongnha"), as.getString("tittle"),
-                    as.getString("mota"), as.getInt("luotxem"),
-                    Uri.parse(as.getString("img1")), Uri.parse(as.getString("img2")),
-                    as.getString("timeUp")));
+            for(Map.Entry<String, List<String>> sa:hs.entrySet()){
+                if(as.getObjectId().equalsIgnoreCase(sa.getKey())==true){
+                    tinDangs.add(new com.example.nhadat_app.Model.TinDang(as.getObjectId(),
+                            as.getString("name"), as.getString("danhmuc"),
+                            as.getString("tinh"), as.getString("huyen"),
+                            as.getString("xa"), Integer.parseInt(as.getString("dientich")),
+                            Long.parseLong(as.getString("gia")), as.getString("phaply"),
+                            as.getString("huongnha"), as.getString("tittle"),
+                            as.getString("mota"), as.getInt("luotxem"),
+                            as.getString("timeUp"), (ArrayList<String>) sa.getValue()));
+                }
+            }
         }
         re.setLayoutManager(new LinearLayoutManager(this));
-        adapter=new com.example.nhadat_app.Adapter.ListAdapter(tinDangs, this, ParseUser.getCurrentUser());
+        adapter=new com.example.nhadat_app.Adapter.ListAdapter(tinDangs,
+                this, ParseUser.getCurrentUser());
         re.setAdapter(adapter);
     }
 

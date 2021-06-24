@@ -28,13 +28,14 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             app:cardCornerRadius="10dp"
-            android:id="@+id/dangtin_imagechooser"
+
             >
             <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_camera"
                 android:background="@color/app1"
+                android:id="@+id/dangtin_imagechooser"
                 />
         </androidx.cardview.widget.CardView>
         <androidx.recyclerview.widget.RecyclerView

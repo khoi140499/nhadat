@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".Gallery">
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imagechoose"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="35dp"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@color/app3"
+        android:textColor="@color/colorSigup"
+        android:fontFamily="@font/font1"
+        android:textStyle="bold"
+        android:text="Tiếp tục"
+        android:id="@+id/btnAccep"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>

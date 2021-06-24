@@ -74,7 +74,7 @@ public class Admin extends AppCompatActivity implements View.OnClickListener {
                     Long.parseLong(as.getString("gia")), as.getString("phaply"),
                     as.getString("huongnha"), as.getString("tittle"),
                     as.getString("mota"), as.getInt("luotxem"),
-                    Uri.parse(as.getString("img1")), Uri.parse(as.getString("img2")),
+
                     as.getString("timeUp")));
         }
         re.setLayoutManager(new LinearLayoutManager(this));
@@ -92,7 +92,6 @@ public class Admin extends AppCompatActivity implements View.OnClickListener {
                     Long.parseLong(as.getString("gia")), as.getString("phaply"),
                     as.getString("huongnha"), as.getString("tittle"),
                     as.getString("mota"), as.getInt("luotxem"),
-                    Uri.parse(as.getString("img1")), Uri.parse(as.getString("img2")),
                     as.getString("timeUp")));
         }
         re.setLayoutManager(new LinearLayoutManager(this));

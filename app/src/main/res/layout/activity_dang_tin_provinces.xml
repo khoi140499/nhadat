@@ -17,14 +17,13 @@
         android:textAllCaps="true"
         android:paddingStart="15dp"
         />
-    <Button
+    <TextView
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/white"
         android:id="@+id/dangtin_tinhthanh"
         android:hint="Chọn tỉnh, thành phố"
-        android:textStyle="normal"
         android:textColor="@color/black"
         android:paddingStart="15dp"
         android:textColorHint="@color/black"
@@ -40,7 +39,7 @@
         android:paddingStart="15dp"
         android:textAllCaps="true"
         />
-    <Button
+    <TextView
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -63,7 +62,7 @@
         android:textAllCaps="true"
         android:paddingStart="15dp"
         />
-    <Button
+    <TextView
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"

@@ -2,57 +2,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_height="fill_parent"
-    tools:context=".DangTinActivity.DangTin_TT">
+    tools:context=".DangTinActivity.DangTin_GT">
     <TextView
         android:layout_marginTop="15dp"
         android:paddingStart="15dp"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:text="Giá"
+        android:text="Hướng nhà"
         android:gravity="center_vertical"
         />
     <EditText
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:inputType="number"
-        android:maxLength="15"
         android:paddingStart="15dp"
-        android:id="@+id/tt_gia"
+        android:id="@+id/gt_huongnha"
         android:background="@drawable/textprofile"
-        />
-    <TextView
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:id="@+id/tt_gt"
-        android:paddingStart="15dp"
-        android:gravity="center_vertical"
         />
     <TextView
         android:layout_marginTop="10dp"
         android:paddingStart="15dp"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:text="Diện tích (m2)"
+        android:text="Pháp lý"
         android:gravity="center_vertical"
         />
     <EditText
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:inputType="number"
+        android:inputType="text"
         android:maxLength="15"
         android:paddingStart="15dp"
-        android:id="@+id/tt_dientich"
+        android:id="@+id/gt_phaply"
         android:background="@drawable/textprofile"
         />
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="155dp"
+        android:layout_height="75dp"
         android:paddingLeft="15dp"
         android:layout_marginTop="15dp"
         android:gravity="center_vertical"
@@ -63,12 +53,8 @@
         android:fontFamily="@font/font1"
         android:textSize="12dp"
         android:background="@drawable/imagechooser"
-        android:text="Về giá: \n\n
-        - Hãy để ý số lượng số 0\n
-        - Không được để giá như sau: 300 (tr)\n\n
-Về diện tích:\n\n
-        - Đơn vị được tính theo m2\n
-        - Không được để trống"
+        android:text="- Các trường không được để trống\n\n
+- Thông tin chính xác, tránh thông tin sai lệch"
         />
     <LinearLayout
         android:layout_width="match_parent"
@@ -78,7 +64,7 @@ Về diện tích:\n\n
         <Button
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:id="@+id/tt_button"
+            android:id="@+id/gt_button"
             android:background="@color/app3"
             android:text="Tiếp tục"
             android:fontFamily="@font/font1"

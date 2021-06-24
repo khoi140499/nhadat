@@ -3,6 +3,7 @@ package com.example.nhadat_app.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,18 +25,12 @@ import java.util.List;
 
 public class ListDistineAdapter extends RecyclerView.Adapter<ListDistineAdapter.Distin> {
     private Context context;
-    private Button lu;
-    private LinearLayout li;
-    private ScrollView lk;
     private List<com.example.nhadat_app.Model.Distin> list;
-
-    public ListDistineAdapter(Context context, ArrayList<com.example.nhadat_app.Model.Distin> list, Button lu, LinearLayout li, ScrollView lk) {
+    private String s;
+    public ListDistineAdapter(Context context, ArrayList<com.example.nhadat_app.Model.Distin> list, String s) {
         this.context = context;
         this.list=list;
-        this.list=list;
-        this.lk=lk;
-        this.lu=lu;
-        this.li=li;
+        this.s=s;
     }
 
     public void setData(List<com.example.nhadat_app.Model.Distin> list){
@@ -73,9 +68,11 @@ public class ListDistineAdapter extends RecyclerView.Adapter<ListDistineAdapter.
         @Override
         public void onClick(View v) {
             int pro=getLayoutPosition();
-            lu.setText(list.get(pro).getDistin());
-            li.setVisibility(View.GONE);
-            lk.setVisibility(View.VISIBLE);
+            Intent a=new Intent();
+            a.putExtra("kq",list.get(pro).getDistin());
+            a.putExtra("kq-tinh",s);
+            ((Activity)context).setResult(Activity.RESULT_OK, a);
+            ((Activity)context).finish();
         }
     }
 }

@@ -6,11 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -26,9 +29,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nhadat_app.Adapter.ListDistineAdapter;
+import com.example.nhadat_app.Adapter.ListIMAdapter;
 import com.example.nhadat_app.Adapter.ListProvincesAdapter;
 import com.example.nhadat_app.Adapter.ListWardAdapter;
 import com.example.nhadat_app.DB.SQLiteDatabase;
+import com.example.nhadat_app.DangTinActivity.ChooseAdress;
+import com.example.nhadat_app.DangTinActivity.DangTIn_DanhMuc;
+import com.example.nhadat_app.DangTinActivity.DangTin_Image;
+import com.example.nhadat_app.DangTinActivity.DangTin_MoTa;
 import com.example.nhadat_app.Model.Distin;
 import com.example.nhadat_app.Model.TinDang;
 import com.example.nhadat_app.Model.Ward;
@@ -43,40 +51,32 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
 public class UpdateItem extends AppCompatActivity implements View.OnClickListener {
-    private Button btnPro, btnDis, btnWard;
-    private Button btnSigIn, btnDangTin;
-    private ImageButton btnBack;
-    private SQLiteDatabase db;
-    private String category="";
-    private LinearLayout lj;
-    private ListProvincesAdapter provin;
-    private ListDistineAdapter distin;
-    private ListWardAdapter ward;
+    private TextView btnPro, btnDis, btnWard;
+    private Button btnUpload, btnDangTin;
+    private ImageButton btnBack, btnAdd;
     private RecyclerView re;
-    private ScrollView scr;
-    private ArrayList<province> list;
-    private ArrayList<Distin> list1;
-    private ImageView im1, img2;
-    private ArrayList<Ward> list2;
-    private StorageTask uploadTask;
-    private FirebaseStorage store;
-    private StorageReference storageReference;
     private TextView txt, txt2;
-    private Uri filepath;
     private Spinner sp;
     private String id;
+    private ListIMAdapter adapter;
+    private ArrayList<String> listImage=new ArrayList<>();
     private EditText txtGia, txtTieuDe, txtDienTich, txtMota, txtHuongDat, txtPhapLy;
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -89,52 +89,54 @@ public class UpdateItem extends AppCompatActivity implements View.OnClickListene
     }
 
     private void setID(){
-        scr=findViewById(R.id.scrollud);
+        re=findViewById(R.id.recycle_updateimage);
+        btnAdd=findViewById(R.id.update_addimage);
         txtDienTich=findViewById(R.id.txt_dientichud);
         txtGia=findViewById(R.id.txt_giaud);
         txtHuongDat=findViewById(R.id.txt_huongud);
         txtMota=findViewById(R.id.txt_motaud);
         txtPhapLy=findViewById(R.id.txt_phaplyud);
         txtTieuDe=findViewById(R.id.txt_tieudeud);
-        lj=findViewById(R.id.lozz);
         btnPro=findViewById(R.id.btn_tinhthanhud);
         txt2=findViewById(R.id.pro_ime1ud);
         txt=findViewById(R.id.pro_imeud);
         btnDis=findViewById(R.id.btn_quanud);
         sp=findViewById(R.id.sp_danhmucupdate);
         btnWard=findViewById(R.id.btn_phuongud);
-        db=new SQLiteDatabase(this);
-        re=findViewById(R.id.recycle_dsud);
         btnDangTin=findViewById(R.id.btn_dangtinup);
-        list=new ArrayList<>();
-        store=FirebaseStorage.getInstance();
-        storageReference=store.getReference();
-        list1=new ArrayList<>();
-        im1=findViewById(R.id.img_update1);
-        img2=findViewById(R.id.img_update2);
+        btnUpload=findViewById(R.id.update_Dangtin);
         btnBack=findViewById(R.id.btnupdateback);
+        btnPro.setTag("yes");
+        btnDis.setTag("yes");
     }
 
     private void setListener(){
         btnDis.setOnClickListener(this);
         btnPro.setOnClickListener(this);
         btnWard.setOnClickListener(this);
-        img2.setOnClickListener(this);
-        im1.setOnClickListener(this);
         btnDangTin.setOnClickListener(this);
         btnBack.setOnClickListener(this);
+        btnUpload.setOnClickListener(this);
+        btnAdd.setOnClickListener(this);
     }
 
     private void receiverData(){
         Intent a=getIntent();
         String s=a.getStringExtra("object");
-        System.out.println(s);
+        listImage=a.getStringArrayListExtra("list");
         String[] arr=s.split("noikho");
-        TinDang tinDang=new TinDang(arr[14],arr[0], arr[1], arr[2], arr[3], arr[4], Integer.parseInt(arr[5]),
-                Long.parseLong(arr[6]), arr[7], arr[8], arr[9], arr[10], Integer.parseInt(arr[11]),
-                Uri.parse(arr[12]), Uri.parse(arr[13]));
-        Picasso.get().load(tinDang.getImg1()).into(im1);
-        Picasso.get().load(tinDang.getImg2()).into(img2);
+        String sa=a.getStringExtra("type");
+        TinDang tinDang=new TinDang(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5],
+                Integer.parseInt(arr[6]), Long.parseLong(arr[7]), arr[8], arr[9], arr[10], arr[11],
+                Integer.parseInt(arr[12]), arr[13], listImage);
+
+        LinearLayoutManager linearLayoutManager=new
+                LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        re.setLayoutManager(linearLayoutManager);
+        adapter=new ListIMAdapter(this, listImage);
+        re.setAdapter(adapter);
+
         btnPro.setText(tinDang.getTinh());
         btnDis.setText(tinDang.getHuyen());
         btnWard.setText(tinDang.getXa());
@@ -155,33 +157,76 @@ public class UpdateItem extends AppCompatActivity implements View.OnClickListene
         sp.setAdapter(arctr);
         id=tinDang.getIdl();
         sp.setSelection(ar.indexOf(tinDang.getDanhMuc()));
+        if(sa.equalsIgnoreCase("update")==true){
+            btnUpload.setVisibility(View.VISIBLE);
+            btnDangTin.setVisibility(View.GONE);
+        }
+        else{
+            btnUpload.setVisibility(View.GONE);
+            btnDangTin.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_tinhthanhud:{
-                getData("province", btnPro);
+                Intent a=new Intent(this, ChooseAdress.class);
+                a.putExtra("intent", "update");
+                a.putExtra("type", "tinh");
+                startActivityForResult(a, 80);
                 break;
             }
             case R.id.btn_quanud:{
-                getDataDistin("distin",btnPro.getText().toString(), btnDis);
+                if(btnDis.getTag().toString().
+                        equalsIgnoreCase("yes")==true){
+                    Toast.makeText(this,
+                            "Bạn chưa chọn tỉnh, thành", Toast.LENGTH_LONG).show();
+                }else{
+                    Intent a=new Intent(this, ChooseAdress.class);
+                    a.putExtra("intent", "update");
+                    a.putExtra("type", "quan");
+                    a.putExtra("tinh", btnPro.getText().toString());
+                    startActivityForResult(a, 81);
+                }
                 break;
             }
             case R.id.btn_phuongud:{
-                getDataWard("ward", btnDis.getText().toString(), btnWard);
-                break;
-            }
-            case R.id.img_update1:{
-                chooseImage(21);
-                break;
-            }
-            case R.id.img_update2:{
-                chooseImage(20);
+                if(btnPro.getTag().toString().equalsIgnoreCase("yes")==true &&
+                        btnDis.getTag().toString().equalsIgnoreCase("yes")==true){
+                    Toast.makeText(this,
+                            "Bạn chưa chọn tỉnh, thành và quận huyện", Toast.LENGTH_LONG).show();
+                }
+                else if(btnPro.getTag().toString().
+                        equalsIgnoreCase("yes")==true){
+                    Toast.makeText(this,
+                            "Bạn chưa chọn tỉnh, thành", Toast.LENGTH_LONG).show();
+                }
+                else if(btnDis.getTag().toString().equalsIgnoreCase("yes")==true){
+                    Toast.makeText(this,
+                            "Bạn chưa chọn quận, huyện", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Intent a=new Intent(this, ChooseAdress.class);
+                    a.putExtra("intent", "update");
+                    a.putExtra("type", "phuong");
+                    a.putExtra("quan", btnDis.getText().toString());
+                    a.putExtra("tinh", btnPro.getText().toString());
+                    startActivityForResult(a, 82);
+                }
                 break;
             }
             case R.id.btn_dangtinup:{
                 dangTin();
+                break;
+            }
+            case R.id.update_Dangtin:{
+                updateTD();
+                break;
+            }
+            case R.id.update_addimage:{
+                Intent a=new Intent(this, Gallery.class);
+                startActivityForResult(a, 10);
                 break;
             }
             case R.id.btnupdateback:{
@@ -191,6 +236,87 @@ public class UpdateItem extends AppCompatActivity implements View.OnClickListene
         }
     }
 
+    private void updateTD(){
+        ParseObject object=new ParseObject("postin");
+        object.put("name", ParseUser.getCurrentUser().getUsername());
+        object.put("tittle", txtTieuDe.getText().toString());
+        object.put("danhmuc", sp.getSelectedItem().toString());
+        object.put("tinh", btnPro.getText().toString());
+        object.put("huyen", btnDis.getText().toString());
+        object.put("xa", btnWard.getText().toString());
+        object.put("dientich", txtDienTich.getText().toString());
+        object.put("gia", txtGia.getText().toString());
+        object.put("huongnha", txtHuongDat.getText().toString());
+        object.put("phaply", txtPhapLy.getText().toString());
+        object.put("luotxem", 0);
+        object.put("mota", txtMota.getText().toString());
+        object.put("tinhtrang", "chưa duyệt");
+        String[] arr=(Calendar.getInstance().getTime()+"").split(" ");
+        String date=arr[2]+" "+arr[1]+" "+arr[5]+" at "+arr[3]+" UTC";
+        object.put("timeUp", date);
+        object.saveInBackground(e1-> {
+            if(e1==null){
+                for(String as:listImage){
+                    try {
+                        ParseObject objects=new ParseObject("ImagePost");
+                        Bitmap chosenImage = MediaStore.Images.Media.getBitmap(
+                                this.getContentResolver(),
+                                Uri.fromFile(new File(as.toString())));
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        chosenImage.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+                        byte[] bytes = byteArrayOutputStream.toByteArray();
+                        ParseFile parseFile = new ParseFile
+                                (UUID.randomUUID().toString()+".jpg", bytes);
+                        objects.put("post_id", object);
+                        objects.put("img", parseFile);
+                        objects.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if(e==null){
+                                }
+                                else{
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                        });
+                    } catch (IOException e) {
+                        e.getMessage();
+                    }
+                }
+            }
+            else{
+                System.out.println(e1.getMessage());
+            }
+        });
+        AlertDialog.Builder b = new AlertDialog.
+                Builder(this);
+        b.setTitle("Tạo tin đăng mới");
+        b.setMessage("Bạn có thể tạo 1 tin đăng hoặc trở về trang chủ");
+        b.setPositiveButton("Tạo mới",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent=new Intent(UpdateItem.this,
+                                DangTIn_DanhMuc.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    }
+                });
+        b.setNegativeButton("Trang chủ",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent=new Intent(UpdateItem.this,
+                                MainActivity.class);
+                        intent.putExtra("type", "yes");
+                        startActivity(intent);
+                    }
+                });
+        AlertDialog ax=b.create();
+        ax.show();
+    }
+
     //dang tin
     private void dangTin(){
         ParseQuery<ParseObject> query=ParseQuery.getQuery("postin");
@@ -198,8 +324,6 @@ public class UpdateItem extends AppCompatActivity implements View.OnClickListene
             if(e==null){
                 object.put("name", ParseUser.getCurrentUser().getUsername());
                 object.put("tittle", txtTieuDe.getText().toString());
-                object.put("img1", txt.getText().toString());
-                object.put("img2", txt2.getText().toString());
                 object.put("danhmuc", sp.getSelectedItem().toString());
                 object.put("tinh", btnPro.getText().toString());
                 object.put("huyen", btnDis.getText().toString());
@@ -211,213 +335,101 @@ public class UpdateItem extends AppCompatActivity implements View.OnClickListene
                 object.put("mota", txtMota.getText().toString());
                 object.put("tinhtrang", "chưa duyệt");
 
-                object.saveInBackground();
+                object.saveInBackground(e1 -> {
+                    if(e1==null){
+                        ParseQuery<ParseObject> query1=ParseQuery.getQuery("ImagePost");
+                        query1.getInBackground(id, (object1, e2) -> {
+                            if(e2==null){
+                                object1.deleteInBackground(e3 -> {
+                                    if(e3==null){
+                                        for(String as:listImage){
+                                            try {
+                                                ParseObject objects=new ParseObject("ImagePost");
+                                                Bitmap chosenImage = MediaStore.Images.Media.getBitmap(
+                                                        this.getContentResolver(),
+                                                        Uri.fromFile(new File(as.toString())));
+                                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                                                chosenImage.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+                                                byte[] bytes = byteArrayOutputStream.toByteArray();
+                                                ParseFile parseFile = new ParseFile
+                                                        (UUID.randomUUID().toString()+".jpg", bytes);
+                                                objects.put("post_id", object);
+                                                objects.put("img", parseFile);
+                                                objects.saveInBackground(new SaveCallback() {
+                                                    @Override
+                                                    public void done(ParseException e) {
+                                                        if(e==null){
+                                                        }
+                                                        else{
+                                                            System.out.println(e.getMessage());
+                                                        }
+                                                    }
+                                                });
+                                            } catch (IOException es) {
+                                                es.getMessage();
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
                 Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_LONG).show();
             }
         }));
     }
 
-    //get province
-    private void getData(String table, Button btn){
-        lj.setVisibility(View.VISIBLE);
-        scr.setVisibility(View.GONE);
-        ParseQuery<ParseObject> query=ParseQuery.getQuery(table);
-        query.findInBackground((objects, e) -> {
-            if(e==null){
-                initTodoList(objects, btn);
-            }
-            else{
-                System.out.println("error "+e.getMessage());
-            }
-        });
-    }
-
-    //get distin
-    private void getDataDistin(String table, String name, Button btn){
-        lj.setVisibility(View.VISIBLE);
-        scr.setVisibility(View.GONE);
-        String id="";
-        for(province as:list){
-            if(as.getProvince().equalsIgnoreCase(name)==true){
-                id=as.getProvinceID();
-                System.out.println("id "+id);
-            }
-        }
-        ParseQuery<ParseObject> query=ParseQuery.getQuery(table);
-        try {
-            System.out.println("count "+query.count());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        query.whereEqualTo("province_code", Integer.parseInt(id));
-        query.setLimit(2000);
-        query.findInBackground((objects, e) -> {
-            if(e==null){
-                checkDistin(objects, btnDis);
-            }
-            else{
-                System.out.println("error "+e.getMessage());
-            }
-        });
-    }
-
-    //check distin
-    private void checkDistin(List<ParseObject> lit, Button btn){
-        ArrayList<Distin> ar=new ArrayList<>();
-        HashSet<String> hs=new HashSet<>();
-        for(ParseObject as:lit){
-            ar.add(new Distin(String.valueOf(as.getInt("province_code")), String.valueOf(as.getInt("district_code")),
-                    as.getString("district_name")));
-        }
-        for(Distin as:ar){
-            hs.add(as.getDistin());
-        }
-
-        for(Distin as:ar){
-            list1.add(new Distin(as.getDistinID(),as.getDistin()));
-        }
-
-        ar.removeAll(ar);
-        for(String as:hs){
-            ar.add(new Distin(as.toString()));
-        }
-        re.setLayoutManager(new LinearLayoutManager(this));
-        distin=new ListDistineAdapter(this, ar, btn, lj, scr);
-        re.setAdapter(distin);
-    }
-
-    //get ward
-    private void getDataWard(String table, String name, Button btn){
-        lj.setVisibility(View.VISIBLE);
-        scr.setVisibility(View.GONE);
-        String id="";
-        for(Distin as:list1){
-            if(as.getDistin().equalsIgnoreCase(name)==true){
-                id=as.getDistinID();
-            }
-        }
-        ParseQuery<ParseObject> query=ParseQuery.getQuery(table);
-        query.setLimit(2000);
-        query.whereEqualTo("district_code", Integer.parseInt(id));
-        query.findInBackground((objects, e) -> {
-            if(e==null){
-                checkWard(objects, btnWard);
-            }
-            else{
-                System.out.println("error "+e.getMessage());
-            }
-        });
-    }
-
-    //check ward
-    private void checkWard(List<ParseObject> lit, Button btn){
-        HashSet<String> hs=new HashSet<>();
-        ArrayList<Ward> ar=new ArrayList<>();
-
-        for(ParseObject as:lit){
-            ar.add(new Ward(String.valueOf(as.getInt("distric_code")),
-                    as.getString("ward_name")));
-        }
-
-        for(Ward as:ar){
-            hs.add(as.getWard());
-        }
-
-        ar.removeAll(ar);
-        for(String as:hs){
-            ar.add(new Ward(as.toString()));
-        }
-        re.setLayoutManager(new LinearLayoutManager(this));
-        ward=new ListWardAdapter(this, ar, btn, lj, scr);
-        re.setAdapter(ward);
-    }
-
-    //adpater recycle
-    private void initTodoList(List<ParseObject> ls, Button btn) {
-        for(ParseObject as:ls){
-            list.add(new province(String.valueOf(as.getInt("code")), as.getString("name")));
-        }
-        re.setLayoutManager(new LinearLayoutManager(this));
-        provin=new ListProvincesAdapter(this, list, btn, lj, scr);
-        re.setAdapter(provin);
-    }
-
-    //chon image
-    private void chooseImage(int pick){
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), pick);
-    }
-
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode,
+                                 @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 21 && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
-        {
-            filepath = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), filepath);
-                im1.setImageBitmap(bitmap);
-                uploadImage(txt);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+        if(requestCode == 80 && resultCode==RESULT_OK && data!=null){
+            Handler handler=new Handler();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    btnPro.setText(data.getStringExtra("kq"));
+                    btnPro.setTag("no");
+                }
+            });
         }
-        else if(requestCode == 20 && resultCode == RESULT_OK
-                && data !=null && data.getData()!=null){
-            filepath = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), filepath);
-                img2.setImageBitmap(bitmap);
-                uploadImage(txt2);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+        else if(requestCode == 81 && resultCode==RESULT_OK && data!=null){
+            Handler handler=new Handler();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    btnPro.setText(data.getStringExtra("kq-tinh"));
+                    btnPro.setTag("no");
+                    btnDis.setText(data.getStringExtra("kq"));
+                    btnDis.setTag("no");
+                }
+            });
         }
-    }
-
-    private void uploadImage(TextView txt){
-        if(filepath != null)
-        {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Đang tải...");
-            progressDialog.show();
-
-            StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
-
-            uploadTask=ref.putFile(filepath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>(){
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            ref.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Uri> task) {
-                                    txt.setText(task.getResult().toString());
-                                }
-                            });
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                    .getTotalByteCount());
-                            progressDialog.setMessage("Đang tải.. "+(int)progress+"%");
-                        }
-                    });
+        else if(requestCode == 82 && resultCode==RESULT_OK && data!=null){
+            Handler handler=new Handler();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    btnWard.setText(data.getStringExtra("kq"));
+                    btnPro.setText(data.getStringExtra("kq-tinh"));
+                    btnPro.setTag("no");
+                    btnDis.setText(data.getStringExtra("kq-quan"));
+                    btnDis.setTag("no");
+                }
+            });
+        }
+        else if(requestCode == 10 && resultCode==RESULT_OK && data!=null){
+            Handler handler=new Handler();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    for(String as:data.getStringArrayListExtra("list")){
+                        listImage.add(as.toString());
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            });
         }
     }
 }

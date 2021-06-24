@@ -1,9 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="15dp"
     tools:context=".DangTinActivity.DangTin_MoTa">
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tiêu đề tin đăng"
+        android:paddingStart="15dp"
+        />
+    <EditText
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        android:background="@drawable/textprofile"
+        android:id="@+id/mota_tieude"
+        android:fontFamily="@font/font1"
+        android:paddingStart="15dp"
+        android:maxLength="50"
+        android:textColor="@color/black"
+        android:textSize="13dp"
+        android:layout_marginBottom="7dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/count_tt"
+        android:layout_marginLeft="15dp"
+        />
+    <TextView
+        android:layout_marginTop="10dp"
+        android:paddingStart="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mô tả"
+        />
+    <EditText
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:lines="6"
+        android:background="@drawable/textprofile"
+        android:id="@+id/mota_txt"
+        android:maxLength="300"
+        android:paddingStart="15dp"
+        android:inputType="textMultiLine"
+        android:fontFamily="@font/font1"
+        android:textColor="@color/black"
+        android:gravity="top|left"
+        android:textSize="13dp"
+        android:layout_marginBottom="7dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/count_mt"
+        android:layout_marginLeft="15dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:paddingLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorSigup"
+        android:fontFamily="@font/font1"
+        android:textSize="12dp"
+        android:background="@drawable/imagechooser"
+        android:text="- Tiêu đề cần nhấn mạnh vào chủ đề đăng\n\n
+-Các trường không được để trống\n\n
+- Thông tin chính xác, tránh thông tin sai lệch"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:paddingBottom="2dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            >
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:stretchColumns="*"
+                >
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    >
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/mota_view"
+                        android:textColor="@color/white"
+                        android:background="@drawable/borderbutton"
+                        android:layout_marginRight="5dp"
+                        android:text="Xem lại"
+                        />
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/mota_button"
+                        android:text="Đăng tin"
+                        android:background="@drawable/dangtinbutton"
+                        />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

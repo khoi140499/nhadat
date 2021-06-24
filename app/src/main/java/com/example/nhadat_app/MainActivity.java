@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.nhadat_app.Adapter.ListAdapter;
 import com.example.nhadat_app.DB.SQLiteDatabase;
+import com.example.nhadat_app.Model.ImagePost;
 import com.example.nhadat_app.Model.TinDang;
 import com.example.nhadat_app.checknetwork.ConnectionNetwork;
 import com.google.android.material.badge.BadgeDrawable;
@@ -54,7 +55,10 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -69,14 +73,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView re;
     private ProgressDialog progressDialog;
     private ListAdapter adapter;
-    String[] projection = {MediaStore.MediaColumns.DATA};
+    private List<ImagePost> imagePosts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        db=new SQLiteDatabase(this);
+        imagePosts=new ArrayList<>();
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -92,14 +96,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         checkLayout();
         setImageCicrle();
         setListener();
-
-        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                projection, null, null, null);
-        while (cursor.moveToNext()) {
-            String absolutePathOfImage = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA));
-            System.out.println("ảnh "+ absolutePathOfImage);
-        }
-        cursor.close();
     }
 
     //set id
@@ -113,10 +109,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         reSearch=findViewById(R.id.bar_nav);
         progressDialog=new ProgressDialog(this);
 
-        String s=db.getTK();
-        if(s.equalsIgnoreCase("null")==true){
-            db.themTK("No");
-        }
 
     }
 
@@ -158,17 +150,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public boolean onQueryTextSubmit(String query) {
                 reSearch.setLayoutParams(new RelativeLayout.LayoutParams
                         (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                ParseQuery<ParseObject> query1y=ParseQuery.getQuery("postin");
-                query1y.whereContains("tittle", query);
-                query1y.findInBackground(new FindCallback<ParseObject>() {
-                    @Override
-                    public void done(List<ParseObject> objects, ParseException e) {
-                        if(e==null){
-                            setViewOnData(objects);
-                        }
-                    }
-                });
-
+                getImage(query);
                 return false;
             }
 
@@ -186,24 +168,68 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    //get all image from class ImagePost
+    private void getImage(String q){
+        ParseQuery<ParseObject> query=ParseQuery.getQuery("ImagePost");
+        query.findInBackground((objects, e) -> {
+            if(e==null){
+                setListImage(objects, q);
+            }
+        });
+    }
 
-    //get data searchview
-    private void setViewOnData(List<ParseObject> list){
-        ArrayList<TinDang> tinDangs=new ArrayList<>();
+    //set list image with object id of class postin
+    private void setListImage(List<ParseObject> list, String q) {
+        HashSet<String> hs=new HashSet<>();
+        for (ParseObject as:list){
+            imagePosts.add(new ImagePost(as.getParseObject("post_id"),
+                    as.getParseFile("img").getUrl()+""));
+        }
+
+        for(ImagePost as:imagePosts){
+            hs.add(as.getPost_id().getObjectId());
+        }
+        HashMap<String, List<String>> hashMap=new HashMap<String, List<String>>();
+        List<String> a=new ArrayList<>();
         for(ParseObject as:list){
-            if(as.getString("tinhtrang").equalsIgnoreCase("duyệt")==true){
-                tinDangs.add(new com.example.nhadat_app.Model.TinDang(as.getString("name"),
-                        as.getString("danhmuc"), as.getString("tinh"),
-                        as.getString("huyen"), as.getString("xa"),
-                        Integer.parseInt(as.getString("dientich")),
-                        Long.parseLong(as.getString("gia")), as.getString("phaply"),
-                        as.getString("huongnha"), as.getString("tittle"),
-                        as.getString("mota"), as.getInt("luotxem"),
-                        Uri.parse(as.getString("img1")), Uri.parse(as.getString("img2")),
-                        as.getString("timeUp")));
+            for(String ass:hs){
+                if(ass.toString().equalsIgnoreCase(as.getParseObject("post_id").getObjectId())==true){
+                    a.add(as.getParseFile("img").getUrl()+"");
+                }
+                hashMap.put(ass.toString(), a);
             }
         }
-        adapter=new com.example.nhadat_app.Adapter.ListAdapter(tinDangs, MainActivity.this, ParseUser.getCurrentUser());
+        ParseQuery<ParseObject> query1y=ParseQuery.getQuery("postin");
+        query1y.whereContains("tittle", q);
+        query1y.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if(e==null){
+                    setViewOnData(objects, hashMap);
+                }
+            }
+        });
+    }
+
+    //get data searchview
+    private void setViewOnData(List<ParseObject> list, HashMap<String, List<String>> hs){
+        ArrayList<TinDang> tinDangs=new ArrayList<>();
+        for(ParseObject as:list){
+            for(Map.Entry<String, List<String>> sa:hs.entrySet()){
+                if(as.getObjectId().equalsIgnoreCase(sa.getKey())==true){
+                    tinDangs.add(new com.example.nhadat_app.Model.TinDang(as.getObjectId(),
+                            as.getString("name"), as.getString("danhmuc"),
+                            as.getString("tinh"), as.getString("huyen"),
+                            as.getString("xa"), Integer.parseInt(as.getString("dientich")),
+                            Long.parseLong(as.getString("gia")), as.getString("phaply"),
+                            as.getString("huongnha"), as.getString("tittle"),
+                            as.getString("mota"), as.getInt("luotxem"),
+                            as.getString("timeUp"), (ArrayList<String>) sa.getValue()));
+                }
+            }
+        }
+        adapter=new com.example.nhadat_app.Adapter.ListAdapter(tinDangs,
+                MainActivity.this, ParseUser.getCurrentUser());
         re.setLayoutManager(new LinearLayoutManager(this));
         re.setAdapter(adapter);
         adapter.notifyDataSetChanged();

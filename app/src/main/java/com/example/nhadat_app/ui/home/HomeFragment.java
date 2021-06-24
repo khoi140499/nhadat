@@ -26,12 +26,14 @@ import com.example.nhadat_app.Adapter.ListNewAdapter;
 import com.example.nhadat_app.ImageSlider.ImageAdapter;
 import com.example.nhadat_app.ItemDanhMuc;
 import com.example.nhadat_app.Model.Category;
+import com.example.nhadat_app.Model.ImagePost;
 import com.example.nhadat_app.Model.ImageSlide;
 import com.example.nhadat_app.Model.TinDang;
 import com.example.nhadat_app.R;
 import com.example.nhadat_app.databinding.FragmentHomeBinding;
 import com.google.android.material.card.MaterialCardView;
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -41,7 +43,10 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -53,6 +58,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private TextView txt1, txt2, txt3;
     private ImageView img1, img2, img3;
     private ListNewAdapter listNewAdapter;
+    private List<ImagePost> imagePosts;
+    private List<ParseObject> parseObjects;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -75,6 +82,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         sliderDataArrayList.add(new ImageSlide(R.drawable.ban2));
         sliderDataArrayList.add(new ImageSlide(R.drawable.bann2));
 
+        imagePosts=new ArrayList<>();
+        parseObjects=new ArrayList<>();
         ImageAdapter adapter = new ImageAdapter(getContext(), sliderDataArrayList);
         sliderView.setAutoCycleDirection(SliderView.LAYOUT_DIRECTION_LTR);
         sliderView.setSliderAdapter(adapter);
@@ -82,40 +91,71 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         sliderView.setAutoCycle(true);
         sliderView.startAutoCycle();
         getBack4App();
-        getData();
-        setDataTop();
+//        setDataTop();
         setCategory();
+        queryImage();
+        getData();
         setListener();
         return root;
     }
 
-    //get data most view
-    private void setDataTop(){
+    private void queryImage(){
+        ParseQuery<ParseObject> query=ParseQuery.getQuery("ImagePost");
+        query.findInBackground((objects, e) -> {
+            if(e==null){
+                setListImage(objects);
+            }
+        });
+    }
+
+    private void setListImage(List<ParseObject> list) {
+        HashSet<String> hs=new HashSet<>();
+        for (ParseObject as:list){
+            imagePosts.add(new ImagePost(as.getParseObject("post_id"),
+                    as.getParseFile("img").getUrl()+""));
+        }
+
+        for(ImagePost as:imagePosts){
+            hs.add(as.getPost_id().getObjectId());
+        }
+        HashMap<String, List<String>> hashMap=new HashMap<String, List<String>>();
+        List<String> a;
+        for(String ass:hs){
+            a=new ArrayList<>();
+            for(ParseObject as:list){
+                    if(ass.toString().equalsIgnoreCase(as.getParseObject("post_id").getObjectId())==true){
+                        a.add(as.getParseFile("img").getUrl()+"");
+                    }
+                }
+                hashMap.put(ass.toString(), a);
+            }
         ParseQuery<ParseObject> query=ParseQuery.getQuery("postin");
         query.setLimit(10);
-        query.whereEqualTo("tinhtrang","duyệt");
-        query.orderByDescending("luotxem");
-        query.findInBackground(((objects, e) -> {
+        query.findInBackground((objects, e) -> {
             if(e==null){
-                getDataTop(objects);
+                getDataTop(objects, hashMap);
             }
-        }));
+        });
     }
 
     //set data most view to recycle view
-    private void getDataTop(List<ParseObject> objects){
+    private void getDataTop(List<ParseObject> objects, HashMap<String, List<String>> hs){
         ArrayList<TinDang> tinDangs=new ArrayList<>();
         for(ParseObject as:objects){
-            tinDangs.add(new com.example.nhadat_app.Model.TinDang(as.getObjectId(),as.getString("name"),
-                    as.getString("danhmuc"), as.getString("tinh"),
-                    as.getString("huyen"), as.getString("xa"),
-                    Integer.parseInt(as.getString("dientich")),
-                    Long.parseLong(as.getString("gia")), as.getString("phaply"),
-                    as.getString("huongnha"), as.getString("tittle"),
-                    as.getString("mota"), as.getInt("luotxem"),
-                    Uri.parse(as.getString("img1")), Uri.parse(as.getString("img2")),
-                    as.getString("timeUp")));
+            for(Map.Entry<String, List<String>> sa:hs.entrySet()){
+                if(as.getObjectId().equalsIgnoreCase(sa.getKey())==true){
+                    tinDangs.add(new com.example.nhadat_app.Model.TinDang(as.getObjectId(),
+                            as.getString("name"), as.getString("danhmuc"),
+                            as.getString("tinh"), as.getString("huyen"),
+                            as.getString("xa"), Integer.parseInt(as.getString("dientich")),
+                            Long.parseLong(as.getString("gia")), as.getString("phaply"),
+                            as.getString("huongnha"), as.getString("tittle"),
+                            as.getString("mota"), as.getInt("luotxem"),
+                            as.getString("timeUp"), (ArrayList<String>) sa.getValue()));
+                }
+            }
         }
+
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(),
                 RecyclerView.HORIZONTAL, false);
         reMost.setLayoutManager(linearLayoutManager);
@@ -125,18 +165,48 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     //get data new
     private void getData(){
+        ParseQuery<ParseObject> query=ParseQuery.getQuery("ImagePost");
+        query.findInBackground((objects, e) -> {
+            if(e==null){
+                getListITV(objects);
+            }
+        });
+    }
+
+    //set image to recycle view data new
+    private void getListITV(List<ParseObject> list){
+        HashSet<String> hs=new HashSet<>();
+        HashMap<String, List<String>> hashMap=new HashMap<String, List<String>>();
+
+        for (ParseObject as:list){
+            imagePosts.add(new ImagePost(as.getParseObject("post_id"),
+                    as.getParseFile("img").getUrl()+""));
+        }
+
+        for(ImagePost as:imagePosts){
+            hs.add(as.getPost_id().getObjectId());
+        }
+        List<String> a;
+        for(String ass:hs){
+            a=new ArrayList<>();
+            for(ParseObject as:list){
+                if(ass.toString().equalsIgnoreCase(as.getParseObject("post_id").getObjectId())==true){
+                    a.add(as.getParseFile("img").getUrl()+"");
+                }
+            }
+            hashMap.put(ass.toString(), a);
+        }
         ParseQuery<ParseObject> query=ParseQuery.getQuery("postin");
         query.setLimit(15);
         query.whereEqualTo("tinhtrang","duyệt");
         query.findInBackground(((objects, e) -> {
             if(e==null){
-                setAdapter(objects);
+                setAdapter(objects, hashMap);
             }
         }));
     }
-
     //set data new to recycle view
-    private void setAdapter(List<ParseObject> list){
+    private void setAdapter(List<ParseObject> list, HashMap<String, List<String>> hs){
         Collections.sort(list, new Comparator<ParseObject>() {
             @Override
             public int compare(ParseObject o1, ParseObject o2) {
@@ -145,19 +215,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
         ArrayList<TinDang> tinDangs=new ArrayList<>();
         for(ParseObject as:list){
-            System.out.println(as.getString("tittle"));
-            tinDangs.add(new com.example.nhadat_app.Model.TinDang(as.getObjectId(),as.getString("name"),
-                    as.getString("danhmuc"), as.getString("tinh"),
-                    as.getString("huyen"), as.getString("xa"),
-                    Integer.parseInt(as.getString("dientich")),
-                    Long.parseLong(as.getString("gia")), as.getString("phaply"),
-                    as.getString("huongnha"), as.getString("tittle"),
-                    as.getString("mota"), as.getInt("luotxem"),
-                    Uri.parse(as.getString("img1")), Uri.parse(as.getString("img2")),
-                    as.getString("timeUp")));
+            for(Map.Entry<String, List<String>> sa:hs.entrySet()){
+                if(as.getObjectId().equalsIgnoreCase(sa.getKey())==true){
+                    tinDangs.add(new com.example.nhadat_app.Model.TinDang(as.getObjectId(),
+                            as.getString("name"), as.getString("danhmuc"),
+                            as.getString("tinh"), as.getString("huyen"),
+                            as.getString("xa"), Integer.parseInt(as.getString("dientich")),
+                            Long.parseLong(as.getString("gia")), as.getString("phaply"),
+                            as.getString("huongnha"), as.getString("tittle"),
+                            as.getString("mota"), as.getInt("luotxem"),
+                            as.getString("timeUp"), (ArrayList<String>) sa.getValue()));
+                }
+            }
         }
         re.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter=new com.example.nhadat_app.Adapter.ListAdapter(tinDangs, getContext(), ParseUser.getCurrentUser());
+        adapter=new com.example.nhadat_app.Adapter.ListAdapter(tinDangs, getContext(),
+                ParseUser.getCurrentUser());
         re.setAdapter(adapter);
     }
 
@@ -236,8 +309,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+        queryImage();
         getData();
-        setDataTop();
         setCategory();
     }
 }
